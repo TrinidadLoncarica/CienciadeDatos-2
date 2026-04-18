@@ -226,36 +226,3 @@ StudentsHabits %>%
 \
 ¿Cómo es el estudiante con alto y bajo puntaje?
 
-```{r}
-StudentsHabits %>%
-  select(exam_score, study_hours_per_day, social_media_hours,
-         sleep_hours, attendance_percentage, mental_health_rating,
-         exercise_frequency, netflix_hours) %>%
-  cor(use = "complete.obs") %>%
-  round(2)
-```
-
-```{r}
-t.test(exam_score ~ part_time_job, data = StudentsHabits)
-t.test(exam_score ~ extracurricular_participation, data = StudentsHabits)
-
-```
-
-```{r}
-aov(exam_score ~ diet_quality, data = StudentsHabits) %>% summary()
-aov(exam_score ~ parental_education_level, data = StudentsHabits) %>% summary()
-aov(exam_score ~ internet_quality, data = StudentsHabits) %>% summary()
-
-```
-
-```{r}
-modelo <- lm(exam_score ~ study_hours_per_day + social_media_hours +
-               sleep_hours + attendance_percentage + mental_health_rating +
-               exercise_frequency + netflix_hours + diet_quality +
-               part_time_job + parental_education_level + internet_quality +
-               extracurricular_participation + gender,
-             data = StudentsHabits)
-
-summary(modelo)
-
-```
