@@ -1,0 +1,35 @@
+---
+title: "Notas de la clase 2026-04-21"
+author: "Aleksander Dietrichson, PhD"
+format: html
+editor: visual
+---
+
+## Tablas 
+
+```{r}
+#| include: false
+library(tidyverse)
+my_data <- readr::read_csv("../Proyecto | Varhulik & Loncarica/student_habits_performance.csv")
+```
+
+```{r}
+#| echo: false
+#| label: tabla_nivel_educativo
+#| tbl-cap: "Nivel educativo"
+my_data %>% 
+  count(parental_education_level) %>% 
+  knitr::kable(col.names = c("Nivel Educativo","Numero"))
+```
+
+## Diagramas
+
+```{r}
+#| echo: false
+#| label: figure_nivel_educativo
+#| fig-cap: "Nivel educativo"
+my_data %>% 
+  count(gender) %>% 
+  ggplot(aes(x=gender,y=n ,fill=gender))+
+  geom_col()
+```
