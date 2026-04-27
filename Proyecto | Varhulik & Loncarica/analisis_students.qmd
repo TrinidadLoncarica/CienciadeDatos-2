@@ -1,0 +1,754 @@
+---
+title: "Análisis Datos Students | Varhulik & Loncarica"
+subtitle: "Informe de resultados académicos"
+format:
+  html:
+    theme: cosmo               # Tema visual (cosmo, flatly, litera, minty, lux...)
+    toc: true                  # Tabla de contenidos
+    toc-depth: 3               # Niveles del índice
+    toc-title: "Contenidos"    # Título del índice
+    toc-location: left         # Posición: left, right, body
+    number-sections: true      # Numerar secciones
+    code-fold: true            # Código colapsable
+    code-tools: true           # Botón copiar/ver código
+    code-copy: true            # Botón copiar código
+    fig-align: center          # Alineación de figuras
+    fig-cap-location: bottom   # Ubicación del pie de figura
+    df-print: paged            # Tablas paginadas
+    smooth-scroll: true        # Scroll suave
+    highlight-style: github    # Estilo de sintaxis
+    embed-resources: true      # HTML autocontenido (sin deps externas)
+    page-layout: full          # full, article, custom
+author:
+  - name: "Melina Ayelen Varhulik"
+    email: melina@ejemplo.com
+    affiliation: "USAM | Universidad Nacional de San Martin"
+  - name: "Maria Trinidad Loncarica"
+    email: trinidad@ejemplo.com
+    affiliation: "USAM | Universidad Nacional de San Martin"
+date: 2026-03-01
+date-format: "D [de] MMMM [de] YYYY"  # "1 de marzo de 2026"
+lang: es
+description: "Análisis exploratorio del dataset Students"
+abstract: |
+  Este informe presenta el análisis estadístico del
+  dataset Students, incluyendo visualizaciones y modelos.
+keywords: [educación, estadística, R, análisis]
+license: "CC BY"
+execute:
+  echo: false        # Ocultar código por defecto
+  warning: false     # Ocultar warnings
+  message: false     # Ocultar mensajes
+  cache: true        # Cachear resultados
+---
+
+
+
+### Análisis: *Students Habits Performance*
+
+En el presente trabajo se analiza el conjunto de datos *student_habits_performance.csv*, el cual contiene información detallada sobre los hábitos de estudiantes universitarios y su rendimiento académico.
+
+### Definición de variables
+
+**Variable dependiente**
+
+-   `exam_score`: variable cuantitativa continua que representa el rendimiento académico del estudiante.
+
+**Variables independientes**
+
+-   `study_hours_per_day`: cuantitativa continua.
+-   `social_media_hours`: cuantitativa continua.
+-   `sleep_hours`: cuantitativa continua.
+-   `attendance_percentage`: cuantitativa continua.
+-   `mental_health_rating`: cuantitativa continua.
+-   `exercise_frequency`: cuantitativa discreta.
+-   `diet_quality`: cualitativa ordinal.
+-   `part_time_job`: cualitativa dicotómica.
+-   `parental_education_level`: cualitativa ordinal.
+-   `internet_quality`: cualitativa ordinal.
+-   `gender`: cualitativa nominal.
+
+### Hipótesis
+
+Los hábitos de vida de los estudiantes, como las horas de estudio, el descanso, el uso de redes sociales y la salud mental, tienen un impacto significativo en su rendimiento académico medido a través de `exam_score`.
+
+------------------------------------------------------------------------
+
+# Cargar librerías y datos
+
+```{r}
+
+library(tidyverse)
+library(readr)
+library(knitr)
+
+StudentsHabits <- read_csv("student_habits_performance.csv") %>%
+  mutate(
+    diet_quality = factor(
+      diet_quality,
+      levels = c("Poor", "Fair", "Good"),
+      ordered = TRUE
+    ),
+    parental_education_level = factor(
+      parental_education_level,
+      levels = c("None", "High School", "Bachelor", "Master"),
+      ordered = TRUE
+    ),
+    internet_quality = factor(
+      internet_quality,
+      levels = c("Poor", "Average", "Good"),
+      ordered = TRUE
+    )
+  )
+```
+
+
+
+## Análisis exploratorio de los datos
+
+Antes de construir modelos explicativos, se realiza un análisis exploratorio con el objetivo de comprender la estructura general del dataset, observar la distribución de la variable dependiente y analizar las variables de manera individual.
+
+```{r}
+
+StudentsHabits %>% 
+  ggplot(aes(exam_score)) +
+  geom_histogram(fill = "white", color = "steelblue", bins = 30) +
+  labs(
+    title = "Distribución del puntaje del examen",
+    x = "Exam score",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+StudentsHabits %>% 
+  ggplot(aes(exam_score)) +
+  geom_density(fill = "white", color = "steelblue") +
+  labs(
+    title = "Densidad del puntaje del examen",
+    x = "Exam score",
+    y = "Densidad"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+
+summary(StudentsHabits$exam_score)
+sd(StudentsHabits$exam_score)
+range(StudentsHabits$exam_score)
+```
+
+### Análisis de variables cuantitativas
+
+```{r}
+StudentsHabits %>% 
+  ggplot(aes(study_hours_per_day)) +
+  geom_density(fill = "white", color = "steelblue") +
+  labs(
+    title = "Distribución de las horas de estudio por día",
+    x = "Horas de estudio",
+    y = "Densidad"
+  ) +
+  theme_minimal()
+```
+
+
+
+### Análisis de variables categóricas
+
+Dieta
+```{r}
+StudentsHabits %>% 
+  count(diet_quality)
+```
+
+```{r}
+StudentsHabits %>% 
+  count(diet_quality) %>% 
+  ggplot(aes(x = diet_quality, y = n, fill = diet_quality)) +
+  geom_col(alpha = 0.85, width = 0.65) +
+theme_minimal(base_size = 13) +
+theme(
+  legend.position = "none",
+  plot.title = element_text(face = "bold")
+) +
+  labs(
+    title = "Distribución de la calidad de dieta",
+    x = "Calidad de dieta",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+Calidad de Internet
+```{r}
+StudentsHabits %>% 
+  count(internet_quality)
+```
+```{r}
+StudentsHabits %>% 
+  count(internet_quality) %>% 
+  ggplot(aes(x = internet_quality, y = n, fill = internet_quality)) +
+  geom_col() +
+  labs(
+    title = "Distribución de la calidad de internet",
+    x = "Calidad de internet",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+Género
+```{r}
+StudentsHabits$gender %>% 
+  table()
+```
+
+```{r}
+StudentsHabits %>% 
+  count(gender) %>% 
+  ggplot(aes(x = gender, y = n, fill = gender)) +
+  geom_col(alpha = 0.85, width = 0.65) +
+theme_minimal(base_size = 13) +
+theme(
+  legend.position = "none",
+  plot.title = element_text(face = "bold")
+) +
+  labs(
+    title = "Distribución por género",
+    x = "Género",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+StudentsHabits %>% 
+  count(parental_education_level)
+```
+Nivel educativo de los padres
+```{r}
+StudentsHabits %>% 
+  count(parental_education_level) %>% 
+  ggplot(aes(x = parental_education_level, y = n, fill = parental_education_level)) +
+  geom_col(alpha = 0.85, width = 0.65) +
+theme_minimal(base_size = 13) +
+theme(
+  legend.position = "none",
+  plot.title = element_text(face = "bold")
+) +
+  labs(
+    title = "Distribución del nivel educativo parental",
+    x = "Nivel educativo parental",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+
+Este análisis descriptivo permite identificar la composición del dataset, la frecuencia de las categorías y la estructura general de las variables antes de evaluar su relación con el rendimiento académico.
+
+#### 1. ¿Las horas de estudio diarias se relacionan con el puntaje del examen?
+
+```{r}
+
+
+StudentsHabits %>%
+  ggplot(aes(x = study_hours_per_day, y = exam_score)) +
+  geom_point(alpha = 0.4, color = "steelblue") +
+  geom_smooth(method = "lm", color = "red", se = TRUE) +
+  labs(
+    title = "Horas de Estudio vs Puntaje del Examen",
+    x = "Horas de estudio por día",
+    y = "Puntaje del examen"
+  ) +
+  theme_minimal()
+```
+```{r}
+summary(StudentsHabits$study_hours_per_day)
+sd(StudentsHabits$study_hours_per_day)
+range(StudentsHabits$study_hours_per_day)
+```
+
+```{r}
+cor.test(StudentsHabits$study_hours_per_day, StudentsHabits$exam_score)
+```
+
+-   *Qué muestra:*
+
+    -   Cada punto representa un estudiante. El eje X indica cuántas horas estudia por día y el eje Y su puntaje. La línea roja muestra la tendencia general. El resultado mostró una correlación positiva fuerte (r = 0.825) y estadísticamente significativa (p-value \< 0.001), lo que indica que existe una relación directa entre ambas variables.Esto implica que a mayor cantidad de horas de estudio, mayor es el rendimiento académico, validando la hipótesis planteada y la tendencia observada en el gráfico.
+
+-   *Conclusión:*
+
+    -   Existe una *relación positiva*: a más horas de estudio, mayor puntaje. Es probablemente la variable con impacto más directo y visible en el rendimiento.
+
+#### 2. ¿El tiempo en redes sociales afecta negativamente el rendimiento?
+```{r}
+
+StudentsHabits %>% 
+  ggplot(aes(social_media_hours)) +
+  geom_density(fill = "white", color = "steelblue") +
+  labs(
+    title = "Distribución de horas en redes sociales",
+    x = "Horas en redes sociales",
+    y = "Densidad"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+summary(StudentsHabits$social_media_hours)
+sd(StudentsHabits$social_media_hours)
+range(StudentsHabits$social_media_hours)
+```
+
+
+```{r}
+StudentsHabits %>%
+  ggplot(aes(x = social_media_hours, y = exam_score)) +
+  geom_point(alpha = 0.45, size = 2, color = "steelblue") +
+geom_smooth(method = "lm", color = "firebrick", se = TRUE, linewidth = 1) +
+  labs(
+    title = "Uso de Redes Sociales vs Puntaje del Examen",
+    x = "Horas en redes sociales por día",
+    y = "Puntaje del examen"
+  ) +
+  theme_minimal()
+
+```
+
+
+```{r}
+
+
+modelo_redes <- lm(exam_score ~ social_media_hours, data = StudentsHabits)
+summary(modelo_redes)
+```
+
+- *Qué muestra:*
+
+  - Cada punto representa un estudiante, ubicado según sus horas en redes sociales y su puntaje. La línea roja muestra la tendencia lineal general.
+
+- *Conclusión:*
+
+  - Se observa una tendencia negativa entre el tiempo dedicado a redes sociales y el rendimiento académico. A medida que aumentan las horas en redes sociales, el puntaje del examen tiende a disminuir.
+
+
+```
+#### 3. ¿La calidad del sueño (horas dormidas) influye en el rendimiento?
+
+
+```{r}
+StudentsHabits %>% 
+  ggplot(aes(sleep_hours)) +
+  geom_density(fill = "white", color = "steelblue") +
+  labs(
+    title = "Distribución de horas de sueño",
+    x = "Horas de sueño",
+    y = "Densidad"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+summary(StudentsHabits$sleep_hours)
+sd(StudentsHabits$sleep_hours)
+range(StudentsHabits$sleep_hours)
+```
+
+
+```{r}
+StudentsHabits %>%
+  ggplot(aes(x = sleep_hours, y = exam_score)) +
+  geom_point(alpha = 0.4, color = "steelblue") +
+  geom_smooth(method = "lm", color = "red", se = TRUE) +
+  labs(
+    title = "Horas de Sueño vs Puntaje del Examen",
+    x = "Horas de sueño por día",
+    y = "Puntaje del examen"
+  ) +
+  theme_minimal()
+```
+
+
+```{r}
+
+
+modelo_sueno <- lm(exam_score ~ sleep_hours, data = StudentsHabits)
+summary(modelo_sueno)
+
+
+```
+
+- *Qué muestra:*
+
+  - Cada punto representa un estudiante, ubicado según sus horas de sueño y su puntaje. La línea roja muestra la tendencia lineal general.
+
+- *Conclusión:*
+
+  - Se observa una tendencia positiva entre las horas de sueño y el rendimiento académico. A mayor cantidad de horas de sueño, el puntaje del examen tiende a aumentar.
+  
+
+#### 4. ¿La salud mental impacta en el rendimiento académico?
+```{r}
+StudentsHabits %>% 
+  ggplot(aes(mental_health_rating)) +
+  geom_histogram(fill = "white", color = "steelblue", bins = 10) +
+  labs(
+    title = "Distribución del rating de salud mental",
+    x = "Salud mental",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+```{r}
+summary(StudentsHabits$mental_health_rating)
+sd(StudentsHabits$mental_health_rating)
+range(StudentsHabits$mental_health_rating)
+```
+
+```{r}
+StudentsHabits %>%
+  ggplot(aes(x = factor(mental_health_rating), y = exam_score, fill = factor(mental_health_rating))) +
+  geom_boxplot(alpha = 0.7) +
+  scale_fill_brewer(palette = "RdYlGn") +
+  labs(
+    title = "Rating de Salud Mental vs Puntaje del Examen",
+    x = "Rating de salud mental (1 = malo, 10 = excelente)",
+    y = "Puntaje del examen",
+    fill = "Rating"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+modelo_mental <- lm(exam_score ~ mental_health_rating, data = StudentsHabits)
+summary(modelo_mental)
+
+cor.test(StudentsHabits$mental_health_rating, StudentsHabits$exam_score, method = "spearman")
+```
+
+-   *Qué muestra:*
+
+    -   Cada caja representa un nivel de salud mental (1 = muy mala, 10 = excelente). La paleta de colores va de rojo (malo) a verde (excelente).
+
+-   *Conclusión:*
+
+    -   Las cajas verdes (ratings altos) están más arriba que las rojas, se concluye que *mejor salud mental se asocia con mayor rendimiento académico*. Esto también puede reflejar que los estudiantes que rinden bien tienen menos estrés. Por otro lado, la correlación de Spearman evidenció una relación positiva moderada (rho = 0.32, p-value \< 0.001), sugiriendo que a medida que mejora la salud mental, también lo hace el rendimiento académico.
+
+Sin embargo, la magnitud de esta relación es menor en comparación con otras variables como las horas de estudio, lo que indica que la salud mental actúa como un factor complementario en el desempeño académico.
+
+#### 5. ¿La dieta y el ejercicio se relacionan con el rendimiento?
+
+```{r}
+StudentsHabits %>%
+  ggplot(aes(x = exercise_frequency, y = exam_score, color = diet_quality)) +
+  geom_jitter(alpha = 0.5, width = 0.2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Frecuencia de Ejercicio y Calidad de Dieta vs Puntaje",
+    x = "Días de ejercicio por semana",
+    y = "Puntaje del examen",
+    color = "Calidad de dieta"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+summary(lm(exam_score ~ exercise_frequency * diet_quality, data = StudentsHabits))
+```
+
+```{r}
+StudentsHabits %>% 
+  count(diet_quality)
+```
+
+```{r}
+StudentsHabits %>% 
+  count(diet_quality) %>% 
+  ggplot(aes(x = diet_quality, y = n, fill = diet_quality)) +
+  geom_col() +
+  labs(
+    title = "Distribución de la calidad de dieta",
+    x = "Calidad de dieta",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+```{r}
+StudentsHabits %>% 
+  ggplot(aes(x = diet_quality, y = exam_score, fill = diet_quality)) +
+  geom_boxplot() +
+  labs(
+    title = "Puntaje según calidad de dieta",
+    x = "Calidad de dieta",
+    y = "Puntaje del examen"
+  ) +
+  theme_minimal()
+```
+-   *Qué muestra:*
+
+    -   El eje X es la frecuencia de ejercicio semanal, el eje Y el puntaje. Cada color representa una calidad de dieta (Buena, Regular, Mala). Las líneas muestran la tendencia de cada grupo.
+
+-   *Conclusión:*
+
+    -   La línea del grupo "Good" (dieta buena) no está por encima de las demás ( pese a subir con el ejercicio ), se concluye, por ende, que *combinar buena dieta con ejercicio regular no favorece drasticamente el rendimiento.*
+
+        -   Permite comparar si el ejercicio ayuda por igual en todos los grupos de dieta.
+
+    -   Los resultados muestran que la frecuencia de ejercicio tiene un efecto positivo y estadísticamente significativo sobre el puntaje del examen (p-value \< 0.001), indicando que a mayor cantidad de días de ejercicio, mejor es el rendimiento académico. Por otro lado, la calidad de la dieta no presenta un efecto significativo sobre el rendimiento (p-value \> 0.05), ni tampoco se observa una interacción significativa entre el ejercicio y la dieta. Esto sugiere que el impacto del ejercicio es independiente de la calidad de la alimentación. Además, el bajo valor de R² (0.03) indica que estas variables explican una pequeña proporción del rendimiento académico, lo que sugiere la existencia de otros factores más determinantes, como las horas de estudio.
+
+#### 6. ¿Los estudiantes con trabajo a tiempo parcial rinden menos?
+
+```{r}
+# Separar grupos
+con_trabajo    <- StudentsHabits %>% filter(part_time_job == "Yes") %>% pull(exam_score)
+sin_trabajo    <- StudentsHabits %>% filter(part_time_job == "No")  %>% pull(exam_score)
+
+# Test estadístico
+t.test(con_trabajo, sin_trabajo)
+
+# Gráfico
+StudentsHabits %>%
+  ggplot(aes(x = part_time_job, y = exam_score, fill = part_time_job)) +
+  geom_boxplot(alpha = 0.7) +
+  stat_summary(fun = mean, geom = "point", shape = 23,
+               size = 4, fill = "white") +
+  labs(
+    title = "¿Trabajar afecta el rendimiento académico?",
+    x = "Trabajo a tiempo parcial",
+    y = "Puntaje del examen"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+```{r}
+t.test(con_trabajo, sin_trabajo)
+```
+
+-   *Qué muestra:*
+
+    -   Compara los puntajes de estudiantes que trabajan vs los que no. El punto blanco dentro de la caja es el **promedio**.
+
+-   *Conclusión:*
+
+    -   Los resultados no muestran diferencias estadísticamente significativas entre ambos grupos (p-value = 0.39), lo que indica que no hay evidencia suficiente para afirmar que trabajar afecte el rendimiento académico. Si bien los estudiantes sin trabajo presentan un puntaje promedio levemente superior, la diferencia es pequeña y no significativa desde el punto de vista estadístico. Esto sugiere que el trabajo a tiempo parcial no es un factor determinante en el desempeño académico dentro de este conjunto de datos.
+#### 7. ¿La calidad de internet afecta en el rendimiento?
+```{r}
+StudentsHabits %>%
+  ggplot(aes(x = internet_quality, y = exam_score, fill = internet_quality)) +
+  geom_boxplot(alpha = 0.75, width = 0.6) +
+  labs(
+    title = "Puntaje según calidad de internet",
+    x = "Calidad de internet",
+    y = "Puntaje del examen"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold")
+  )
+```
+
+#### Tabla del nivel educativo de los padres
+
+```{r}
+#| echo: false
+#| label: tabla_nivel_educativo
+#| tbl-cap: "Nivel educativo de los padres"
+
+StudentsHabits %>% 
+  count(parental_education_level) %>% 
+  knitr::kable(col.names = c("Nivel Educativo","Numero"))
+```
+
+```{r}
+StudentsHabits %>% 
+  ggplot(aes(x = parental_education_level, y = exam_score, fill = parental_education_level)) +
+  geom_boxplot() +
+  theme_minimal()
+```
+
+#### Distribución del género
+
+```{r}
+#| echo: false
+#| label: figure_genero
+#| fig-cap: "Distribución del género"
+
+StudentsHabits %>% 
+  count(gender) %>% 
+  ggplot(aes(x = gender, y = n, fill = gender)) +
+  geom_col()
+```
+
+
+
+## Análisis complementarios
+
+### ¿El nivel educativo de los padres influye en el puntaje?
+
+Para observar si el nivel educativo parental se relaciona con el rendimiento académico, se analiza la distribución del `exam_score` según cada categoría de `parental_education_level`.
+
+
+```{r}
+
+StudentsHabits %>% 
+  ggplot(aes(x = parental_education_level, y = exam_score, fill = parental_education_level)) +
+  geom_boxplot(alpha = 0.75, width = 0.6) +
+  labs(
+    title = "Rendimiento según nivel educativo parental",
+    subtitle = "Comparación del puntaje del examen por nivel educativo de los padres",
+    x = "Nivel educativo parental",
+    y = "Puntaje del examen"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold"),
+    axis.text.x = element_text(angle = 20, hjust = 1)
+  )
+```
+
+
+```{r}
+correlaciones_exam <- StudentsHabits %>%
+  select(
+    study_hours_per_day,
+    social_media_hours,
+    sleep_hours,
+    attendance_percentage,
+    mental_health_rating,
+    exercise_frequency,
+    netflix_hours,
+    exam_score
+  ) %>%
+  cor(use = "complete.obs") %>%
+  as.data.frame() %>%
+  rownames_to_column("variable") %>%
+  select(variable, correlacion_con_exam_score = exam_score) %>%
+  filter(variable != "exam_score") %>%
+  mutate(
+    correlacion_abs = abs(correlacion_con_exam_score),
+    variable = reorder(variable, correlacion_abs)
+  )
+
+correlaciones_exam %>%
+  ggplot(aes(x = variable, y = correlacion_con_exam_score, fill = correlacion_con_exam_score)) +
+  geom_col(width = 0.7) +
+  coord_flip() +
+  labs(
+    title = "Relación de cada hábito con el puntaje del examen",
+    subtitle = "Correlación entre variables cuantitativas y exam_score",
+    x = "Variable",
+    y = "Correlación con exam_score"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold")
+  )
+```
+
+```{r}
+correlaciones_exam %>%
+  arrange(desc(correlacion_abs)) %>%
+  select(variable, correlacion_con_exam_score) %>%
+  knitr::kable(
+    col.names = c("Variable", "Correlación con exam_score"),
+    caption = "Ranking de variables según su correlación con el rendimiento académico"
+  )
+```
+### Conclusión
+
+El análisis evidencia que no todos los hábitos impactan de la misma manera en el rendimiento académico. En particular, las horas de estudio presentan la relación positiva más fuerte con el puntaje del examen, consolidándose como el factor más determinante. En contraste, variables como el uso de redes sociales y el consumo de Netflix muestran asociaciones negativas, aunque de menor magnitud.
+
+Por otro lado, factores como el sueño, la asistencia y la salud mental presentan relaciones positivas moderadas, lo que sugiere que el rendimiento académico no depende de una única variable, sino de una combinación de hábitos. En conjunto, los resultados permiten concluir que el desempeño académico está principalmente impulsado por el compromiso con el estudio, pero también influenciado por el equilibrio en el estilo de vida del estudiante.
+
+
+## ¿Cómo es el estudiante con alto y bajo puntaje?
+```{r}
+perfil_rendimiento <- StudentsHabits %>%
+  mutate(
+    grupo_rendimiento = case_when(
+      exam_score >= quantile(exam_score, 0.75, na.rm = TRUE) ~ "Alto rendimiento",
+      exam_score <= quantile(exam_score, 0.25, na.rm = TRUE) ~ "Bajo rendimiento",
+      TRUE ~ "Rendimiento medio"
+    )
+  ) %>%
+  filter(grupo_rendimiento != "Rendimiento medio") %>%
+  group_by(grupo_rendimiento) %>%
+  summarise(
+    `Horas de estudio` = mean(study_hours_per_day, na.rm = TRUE),
+    `Redes sociales` = mean(social_media_hours, na.rm = TRUE),
+    `Horas de sueño` = mean(sleep_hours, na.rm = TRUE),
+    `Netflix` = mean(netflix_hours, na.rm = TRUE),
+    `Salud mental` = mean(mental_health_rating, na.rm = TRUE),
+    `Asistencia` = mean(attendance_percentage, na.rm = TRUE)
+  ) %>%
+  pivot_longer(
+    cols = -grupo_rendimiento,
+    names_to = "variable",
+    values_to = "promedio"
+  )
+
+perfil_rendimiento %>%
+  ggplot(aes(x = variable, y = promedio, fill = grupo_rendimiento)) +
+  geom_col(position = "dodge", width = 0.7) +
+  coord_flip() +
+  labs(
+    title = "Perfil comparado de estudiantes según rendimiento",
+    subtitle = "Promedios de hábitos en estudiantes de alto y bajo puntaje",
+    x = "Variable",
+    y = "Promedio",
+    fill = "Grupo"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "bottom"
+  )
+```
+El análisis comparativo entre estudiantes de alto y bajo rendimiento permite identificar diferencias claras en sus hábitos. Los estudiantes con mejores puntajes presentan, en promedio, más horas de estudio y mayores niveles de asistencia, lo que refuerza la idea de que el compromiso académico es un factor central en el rendimiento.
+
+Por el contrario, los estudiantes de bajo rendimiento tienden a dedicar más tiempo a actividades no académicas, como redes sociales y consumo de contenido (Netflix), lo que podría estar desplazando tiempo de estudio. Asimismo, se observan diferencias en variables como el sueño y la salud mental, que, aunque menos determinantes, contribuyen a configurar perfiles de desempeño distintos.
+
+En conjunto, este análisis muestra que el rendimiento académico no responde a un único hábito, sino a un patrón de comportamiento donde el equilibrio entre estudio, descanso y uso del tiempo libre resulta clave.
+
+## Modelo de regresión lineal múltiple
+
+Luego del análisis exploratorio y del estudio individual de las variables, se estima un modelo de regresión lineal múltiple con el objetivo de evaluar el efecto conjunto de los hábitos y características de los estudiantes sobre el rendimiento académico.
+
+```{r}
+modelo <- lm(exam_score ~ study_hours_per_day + social_media_hours +
+               sleep_hours + attendance_percentage + mental_health_rating +
+               exercise_frequency + netflix_hours + diet_quality +
+               part_time_job + parental_education_level + internet_quality +
+               extracurricular_participation + gender,
+             data = StudentsHabits)
+
+summary(modelo)
+
+```
+## Modelo con interacciones
+```{r}
+
+
+modelo_interacciones <- lm(
+  exam_score ~ 
+    study_hours_per_day * sleep_hours +
+    study_hours_per_day * mental_health_rating +
+    social_media_hours * sleep_hours +
+    diet_quality + parental_education_level,
+  data = StudentsHabits
+)
+
+```
+Este modelo permite evaluar si el efecto de una variable depende de otra. Se analizaron interacciones entre horas de estudio y sueño, horas de estudio y salud mental, y redes sociales y sueño. A partir del valor de los coeficientes y su significancia, se seleccionarán las interacciones más relevantes para explicar el rendimiento académico.
+
+```{r}
+summary(modelo_interacciones)
+```
+### Interpretación del modelo
+
+El modelo muestra que el efecto de las variables no es aislado, sino combinado. En particular, las horas de estudio tienen un mayor impacto cuando se acompañan de buen descanso y salud mental. En cambio, el uso de redes sociales afecta negativamente el rendimiento, especialmente si reduce las horas de sueño. En conjunto, el rendimiento académico depende de la interacción entre los distintos hábitos.
