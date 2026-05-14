@@ -1537,10 +1537,8 @@ tidy(modelo_interacciones) %>%
   tab_style(
     style     = cell_fill(color = "#ffd4d4"),
     locations = cells_body(rows = p.value >= 0.05)
-  ) %>%
-  tab_footnote(
-    footnotent.weight = "bold"
-  )
+  ) 
+ 
 ```
 
 ### Interpretación del modelo
