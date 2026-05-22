@@ -1,5 +1,5 @@
 ---
-title: "Análisis Datos Students | Varhulik & Loncarica"
+title: "Análisis Datos: Habitos de los estudiantes"
 subtitle: "Informe de resultados académicos"
 format:
   html:
@@ -531,10 +531,88 @@ geom_smooth(method = "lm", color = "firebrick", se = TRUE, linewidth = 1) +
 ```
 
 ```{r}
-
+library(broom)
+library(gt)
 
 modelo_redes <- lm(exam_score ~ social_media_hours, data = StudentsHabits)
-summary(modelo_redes)
+
+# ---- 1. COEFICIENTES ----
+tidy(modelo_redes) %>%
+  gt() %>%
+  tab_header(
+    title    = "Coeficientes del Modelo de Regresión Simple",
+    subtitle = "exam_score ~ social_media_hours"
+  ) %>%
+  fmt_number(decimals = 4) %>%
+  cols_label(
+    term      = "Variable",
+    estimate  = "Estimado",
+    std.error = "Error Estándar",
+    statistic = "Estadístico (t)",
+    p.value   = "P-valor"
+  ) %>%
+  tab_style(
+    style     = cell_fill(color = "#d4f4dd"),
+    locations = cells_body(rows = p.value < 0.05)
+  ) %>%
+  tab_style(
+    style     = cell_fill(color = "#ffd4d4"),
+    locations = cells_body(rows = p.value >= 0.05)
+  ) %>%
+  tab_footnote(
+    footnote = "Verde: p < 0.05 (significativo) | Rojo: p ≥ 0.05 (no significativo)"
+  ) %>%
+  tab_options(
+    table.font.size           = 14,
+    heading.background.color  = "steelblue",
+    heading.title.font.size   = 16,
+    column_labels.font.weight = "bold"
+  )
+
+# ---- 2. MÉTRICAS GLOBALES ----
+glance(modelo_redes) %>%
+  gt() %>%
+  tab_header(
+    title    = "Métricas Globales del Modelo",
+    subtitle = "exam_score ~ social_media_hours"
+  ) %>%
+  fmt_number(decimals = 4) %>%
+  cols_label(
+    r.squared     = "R²",
+    adj.r.squared = "R² Ajustado",
+    sigma         = "Sigma",
+    statistic     = "F-statistic",
+    p.value       = "P-valor",
+    df            = "GL",
+    logLik        = "Log-Likelihood",
+    AIC           = "AIC",
+    BIC           = "BIC",
+    deviance      = "Devianza",
+    df.residual   = "GL Residuos",
+    nobs          = "N observaciones"
+  ) %>%
+  tab_options(
+    table.font.size           = 14,
+    heading.background.color  = "steelblue",
+    heading.title.font.size   = 16,
+    column_labels.font.weight = "bold"
+  )
+
+# ---- 3. VALORES AJUSTADOS Y RESIDUOS ----
+augment(modelo_redes) %>%
+  head(10) %>%
+  gt() %>%
+  tab_header(
+    title    = "Valores Ajustados y Residuos",
+    subtitle = "Primeras 10 observaciones"
+  ) %>%
+  fmt_number(decimals = 4) %>%
+  tab_options(
+    table.font.size           = 14,
+    heading.background.color  = "steelblue",
+    heading.title.font.size   = 16,
+    column_labels.font.weight = "bold"
+  )
 ```
 
 *Qué muestra:*
@@ -560,9 +638,43 @@ StudentsHabits %>%
 ```
 
 ```{r}
-summary(StudentsHabits$sleep_hours)
-sd(StudentsHabits$sleep_hours)
-range(StudentsHabits$sleep_hours)
+
+library(dplyr)
+library(gt)
+
+StudentsHabits %>%
+  summarise(
+    Minimo     = min(sleep_hours, na.rm = TRUE),
+    Q1         = quantile(sleep_hours, 0.25, na.rm = TRUE),
+    Mediana    = median(sleep_hours, na.rm = TRUE),
+    Media      = mean(sleep_hours, na.rm = TRUE),
+    Q3         = quantile(sleep_hours, 0.75, na.rm = TRUE),
+    Maximo     = max(sleep_hours, na.rm = TRUE),
+    Desvio_std = sd(sleep_hours, na.rm = TRUE),
+    Rango      = max(sleep_hours) - min(sleep_hours)
+  ) %>%
+  gt() %>%
+  tab_header(
+    title    = "Estadísticas Descriptivas",
+    subtitle = "Variable: Sleep Hours"
+  ) %>%
+  fmt_number(decimals = 2) %>%
+  cols_label(
+    Minimo     = "Mínimo",
+    Q1         = "Q1 (25%)",
+    Mediana    = "Mediana",
+    Media      = "Media",
+    Q3         = "Q3 (75%)",
+    Maximo     = "Máximo",
+    Desvio_std = "Desvío Estándar",
+    Rango      = "Rango"
+  ) %>%
+  tab_options(
+    table.font.size           = 14,
+    heading.background.color  = "steelblue",
+    heading.title.font.size   = 16,
+    column_labels.font.weight = "bold"
+  )
 ```
 
 ```{r}
