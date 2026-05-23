@@ -75,10 +75,15 @@ Los hábitos de vida de los estudiantes, como las horas de estudio, el descanso,
 ```{r}
 #Se intalan las librerias y los codigos
 library(tidyverse)
-install.packages("gt")
-library(readr)
+library(gt)
+library(broom)
 library(knitr)
-install.packages("broom")
+
+source("R/tablas.R")
+source("R/traer_datos.R")
+source("R/graficos.R")
+
+StudentsHabits <- traer_datos()
 
 StudentsHabits <- read_csv("student_habits_performance.csv") %>%
   mutate(
@@ -108,15 +113,8 @@ Antes de construir modelos explicativos, se realiza un *análisis exploratorio* 
 
 ```{r}
 
-StudentsHabits %>% 
-  ggplot(aes(exam_score)) +
-  geom_histogram(fill = "white", color = "steelblue", bins = 30) +
-  labs(
-    title = "Distribución del puntaje del examen",
-    x = "Exam score",
-    y = "Frecuencia"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_exam_score(StudentsHabits)
 ```
 
 ```{r}
@@ -373,55 +371,17 @@ Este análisis descriptivo permite identificar la composición del dataset, la f
 ```{r}
 
 
-StudentsHabits %>%
-  ggplot(aes(x = study_hours_per_day, y = exam_score)) +
-  geom_point(alpha = 0.4, color = "steelblue") +
-  geom_smooth(method = "lm", color = "red", se = TRUE) +
-  labs(
-    title = "Horas de Estudio vs Puntaje del Examen",
-    x = "Horas de estudio por día",
-    y = "Puntaje del examen"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_estudio_score(StudentsHabits)
 ```
 
 ```{r}
-library(dplyr)
-library(gt)
-
-StudentsHabits %>%
-  summarise(
-    Minimo     = min(study_hours_per_day, na.rm = TRUE),
-    Q1         = quantile(study_hours_per_day, 0.25, na.rm = TRUE),
-    Mediana    = median(study_hours_per_day, na.rm = TRUE),
-    Media      = mean(study_hours_per_day, na.rm = TRUE),
-    Q3         = quantile(study_hours_per_day, 0.75, na.rm = TRUE),
-    Maximo     = max(study_hours_per_day, na.rm = TRUE),
-    Desvio_std = sd(study_hours_per_day, na.rm = TRUE),
-    Rango      = max(study_hours_per_day) - min(study_hours_per_day)
-  ) %>%
-  gt() %>%
-  tab_header(
-    title    = "Estadísticas Descriptivas",
-    subtitle = "Variable: Study Hours Per Day"
-  ) %>%
-  fmt_number(decimals = 2) %>%
-  cols_label(
-    Minimo     = "Mínimo",
-    Q1         = "Q1 (25%)",
-    Mediana    = "Mediana",
-    Media      = "Media",
-    Q3         = "Q3 (75%)",
-    Maximo     = "Máximo",
-    Desvio_std = "Desvío Estándar",
-    Rango      = "Rango"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_descriptiva(
+  StudentsHabits,
+  exam_score,
+  "Variable: Exam Score"
+)
 ```
 
 ```{r}
