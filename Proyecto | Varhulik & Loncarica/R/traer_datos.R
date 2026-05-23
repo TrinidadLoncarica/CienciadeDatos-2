@@ -1,5 +1,7 @@
+library(readr)
+library(dplyr)
 traer_datos <- function() {
-  read_csv("Proyecto | Varhulik & Loncarica/student_habits_performance.csv") %>%
+  read_csv("student_habits_performance.csv") %>%
     mutate(
       diet_quality = factor(
         diet_quality,

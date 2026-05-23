@@ -1,0 +1,55 @@
+.reveal {
+  font-family: "Arial", sans-serif;
+  color: #1f2937;
+}
+
+.reveal h1 {
+  font-size: 2.6em;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.reveal h2 {
+  font-size: 1.7em;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 25px;
+}
+
+.reveal p, .reveal li {
+  font-size: 0.9em;
+  line-height: 1.35;
+}
+
+.reveal section {
+  text-align: left;
+}
+
+.title-slide {
+  text-align: center !important;
+}
+
+.big-number {
+  font-size: 2.3em;
+  font-weight: 800;
+  color: #2563eb;
+}
+
+.card {
+  background: #f8fafc;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.small-text {
+  font-size: 0.75em;
+  color: #475569;
+}
