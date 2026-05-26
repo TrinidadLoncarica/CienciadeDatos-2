@@ -32,112 +32,104 @@ source("R/tablas.R")
 StudentsHabits <- traer_datos()
 ```
 
-\
 
-\### Pregunta central\
-\
-Analizar cómo distintos hábitos de vida influyen en el rendimiento académico de estudiantes universitarios.\
-\
-\
-\### Variable objetivo\
-\
-\*\*exam_score\*\*\
-\
-Puntaje obtenido por cada estudiante en el examen..\
-\
+### Pregunta central
 
-\## Variables analizadas
+Analizar cómo distintos hábitos de vida influyen en el rendimiento académico de estudiantes universitarios.
 
-\### Hábitos académicos\
-\
-- Horas de estudio\
-- Asistencia\
-- Trabajo parcial\
-\
-\### Hábitos de vida\
-\
-- Sueño\
-- Redes sociales\
-- Salud mental\
-- Ejercicio\
-- Dieta\
-- Calidad de internet\
-\
----\
-\
-\## Distribución del rendimiento académico\
-\
-\
+### Variable objetivo
+
+**exam_score**
+
+Puntaje obtenido por cada estudiante en el examen..
+
+## Variables analizadas
+
+### Hábitos académicos
+
+- Horas de estudio
+- Asistencia
+- Trabajo parcial
+
+### Hábitos de vida
+
+- Sueño
+- Redes sociales
+- Salud mental
+- Ejercicio
+- Dieta
+- Calidad de internet
+
+---
+
+## Distribución del rendimiento académico
+
 
 ```{r}
 plot_exam_score(StudentsHabits)
 ```
 
-\
-\
-\
-\
----\
-\
-\## Hallazgo principal\
-\
-Las horas de estudio son el factor más importante\
-\
-A mayor cantidad de horas de estudio por día, mayor tiende a ser el puntaje del examen.\
-\
+
+---
+
+## Hallazgo principal
+
+Las horas de estudio son el factor más importante
+
+A mayor cantidad de horas de estudio por día, mayor tiende a ser el puntaje del examen.
+
 
 ```{r}
 plot_estudio_score(StudentsHabits)
 ```
 
-\
-\
-\## Interpretación\
-\
-- A mayor cantidad de horas de estudio, mayor puntaje.\
-- La relación observada es positiva y fuerte.\
-- El compromiso académico es el predictor principal del rendimiento.\
-\
----\
-\
-\## Factores que ayudan al rendimiento\
-\
-- Más horas de sueño.\
-- Mejor salud mental.\
-- Mayor frecuencia de ejercicio.\
-- Mejor calidad de dieta.\
-\
----\
-\
-\## Factores que perjudican el rendimiento\
-\
-- Uso excesivo de redes sociales.\
-- Menor asistencia.\
-- Menor tiempo dedicado al estudio.\
-\
----\
-\
-\## Perfil del estudiante de alto rendimiento\
-\
-Los estudiantes con mejores resultados tienden a:\
-\
-- Estudiar más horas.\
-- Tener mayor asistencia.\
-- Dormir mejor.\
-- Utilizar menos redes sociales.\
-- Presentar mejores indicadores de bienestar.\
-\
----\
-\
-\## Conclusiones\
-\
-\### Principales hallazgos\
-\
-1. Las horas de estudio son el factor más importante.\
-2. El sueño y la salud mental también influyen.\
-3. Las redes sociales muestran una relación negativa.\
-4. El rendimiento depende de múltiples hábitos combinados.\
-\
-\### Conclusión final\
-\
+
+## Interpretación
+
+- A mayor cantidad de horas de estudio, mayor puntaje.
+- La relación observada es positiva y fuerte.
+- El compromiso académico es el predictor principal del rendimiento.
+
+---
+
+## Factores que ayudan al rendimiento
+
+- Más horas de sueño.
+- Mejor salud mental.
+- Mayor frecuencia de ejercicio.
+- Mejor calidad de dieta.
+
+---
+
+## Factores que perjudican el rendimiento
+
+- Uso excesivo de redes sociales.
+- Menor asistencia.
+- Menor tiempo dedicado al estudio.
+
+---
+
+## Perfil del estudiante de alto rendimiento
+
+Los estudiantes con mejores resultados tienden a:
+
+- Estudiar más horas.
+- Tener mayor asistencia.
+- Dormir mejor.
+- Utilizar menos redes sociales.
+- Presentar mejores indicadores de bienestar.
+
+---
+
+## Conclusiones
+
+### Principales hallazgos
+
+1. Las horas de estudio son el factor más importante.
+2. El sueño y la salud mental también influyen.
+3. Las redes sociales muestran una relación negativa.
+4. El rendimiento depende de múltiples hábitos combinados.
+
+### Conclusión final
+
 Los hábitos académicos y de bienestar tienen una influencia significativa sobre el desempeño estudiantil.

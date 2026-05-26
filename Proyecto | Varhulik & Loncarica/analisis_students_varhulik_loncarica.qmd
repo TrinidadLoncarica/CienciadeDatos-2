@@ -35,8 +35,14 @@ execute:
   echo: false
   warning: false
   message: false
-  cache: true
+  cache: false
 ---
+
+```{r}
+source("traer_datos.R")
+
+StudentsHabits <- traer_datos()
+```
 
 ```{r}
 #| echo: false
@@ -45,6 +51,9 @@ execute:
 library(tidyverse)
 library(readr)
 library(knitr)
+
+source("R/traer_datos.R")
+source("R/graficos.R")
 
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -66,6 +75,7 @@ theme_set(
     )
 )
 ```
+
 
 # Introducción
 
@@ -104,24 +114,7 @@ Los hábitos de vida de los estudiantes, como las horas de estudio, el descanso,
 ```{r}
 
 
-StudentsHabits <- read_csv("student_habits_performance.csv") %>%
-  mutate(
-    diet_quality = factor(
-      diet_quality,
-      levels = c("Poor", "Fair", "Good"),
-      ordered = TRUE
-    ),
-    parental_education_level = factor(
-      parental_education_level,
-      levels = c("None", "High School", "Bachelor", "Master"),
-      ordered = TRUE
-    ),
-    internet_quality = factor(
-      internet_quality,
-      levels = c("Poor", "Average", "Good"),
-      ordered = TRUE
-    )
-  )
+StudentsHabits <- traer_datos()
 ```
 
 ## Análisis exploratorio de los datos
@@ -130,15 +123,7 @@ Antes de construir modelos explicativos, se realiza un análisis exploratorio co
 
 ```{r}
 
-StudentsHabits %>% 
-  ggplot(aes(exam_score)) +
-  geom_histogram(fill = "white", color = "steelblue", bins = 30) +
-  labs(
-    title = "Distribución del puntaje del examen",
-    x = "Exam score",
-    y = "Frecuencia"
-  ) +
-  theme_minimal()
+plot_exam_score(StudentsHabits)
 ```
 
 ```{r}
