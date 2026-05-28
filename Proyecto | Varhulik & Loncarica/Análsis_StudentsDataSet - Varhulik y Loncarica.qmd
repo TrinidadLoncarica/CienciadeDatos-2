@@ -98,69 +98,20 @@ plot_exam_score(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>% 
-  ggplot(aes(exam_score)) +
-  geom_density(fill = "white", color = "steelblue") +
-  labs(
-    title = "Densidad del puntaje del examen",
-    x = "Exam score",
-    y = "Densidad"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_densidad_exam(StudentsHabits)
 ```
 
 ```{r}
-
-library(dplyr)
-library(gt)
-
-StudentsHabits %>%
-  summarise(
-    Minimo     = min(exam_score, na.rm = TRUE),
-    Q1         = quantile(exam_score, 0.25, na.rm = TRUE),
-    Mediana    = median(exam_score, na.rm = TRUE),
-    Media      = mean(exam_score, na.rm = TRUE),
-    Q3         = quantile(exam_score, 0.75, na.rm = TRUE),
-    Maximo     = max(exam_score, na.rm = TRUE),
-    Desvio_std = sd(exam_score, na.rm = TRUE),
-    Rango      = max(exam_score) - min(exam_score)
-  ) %>%
-  gt() %>%
-  tab_header(
-    title    = "Análisis exploratorio de los datos",
-    subtitle = "Variable: Exam Score"
-  ) %>%
-  fmt_number(decimals = 2) %>%
-  cols_label(
-    Minimo     = "Mínimo",
-    Q1         = "Q1 (25%)",
-    Mediana    = "Mediana",
-    Media      = "Media",
-    Q3         = "Q3 (75%)",
-    Maximo     = "Máximo",
-    Desvio_std = "Desvío Estándar",
-    Rango      = "Rango"
-  ) %>%
-  tab_options(
-    table.font.size       = 14,
-    heading.background.color = "steelblue",
-    heading.title.font.size  = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_resumen_exam(StudentsHabits)
 ```
 
 ### Análisis de variables cuantitativas
 
 ```{r}
-StudentsHabits %>% 
-  ggplot(aes(study_hours_per_day)) +
-  geom_density(fill = "white", color = "steelblue") +
-  labs(
-    title = "Distribución de las horas de estudio por día",
-    x = "Horas de estudio",
-    y = "Densidad"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_densidad_study_hours(StudentsHabits)
 ```
 
 ### Análisis de variables categóricas
@@ -168,178 +119,49 @@ StudentsHabits %>%
 | ***Dieta***
 
 ```{r}
-
-library(dplyr)
-library(gt)
-
-StudentsHabits %>% 
-  count(diet_quality) %>%
-  mutate(porcentaje = round(n / sum(n) * 100, 1)) %>%
-  gt() %>%
-  tab_header(
-    title    = "Distribución de Calidad de Dieta",
-    subtitle = "Variable: Diet Quality"
-  ) %>%
-  cols_label(
-    diet_quality = "Calidad de Dieta",
-    n            = "Frecuencia",
-    porcentaje   = "Porcentaje (%)"
-  ) %>%
-  tab_options(
-    table.font.size          = 14,
-    heading.background.color = "steelblue",
-    heading.title.font.size  = 16,
-    column_labels.font.weight = "bold"
-  )
-
+source("R/tablas.R")
+tabla_diet_quality(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>% 
-  count(diet_quality) %>% 
-  ggplot(aes(x = diet_quality, y = n, fill = diet_quality)) +
-  geom_col(alpha = 0.85, width = 0.65) +
-theme_minimal(base_size = 13) +
-theme(
-  legend.position = "none",
-  plot.title = element_text(face = "bold")
-) +
-  labs(
-    title = "Distribución de la calidad de dieta",
-    x = "Calidad de dieta",
-    y = "Frecuencia"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_diet_quality(StudentsHabits)
 ```
 
 | ***Calidad de Internet***
 
 ```{r}
-library(dplyr)
-library(gt)
-
-StudentsHabits %>% 
-  count(internet_quality) %>%
-  mutate(porcentaje = round(n / sum(n) * 100, 1)) %>%
-  gt() %>%
-  tab_header(
-    title    = "Distribución de Calidad de Internet",
-    subtitle = "Variable: Internet Quality"
-  ) %>%
-  cols_label(
-    internet_quality = "Calidad de Internet",
-    n                = "Frecuencia",
-    porcentaje       = "Porcentaje (%)"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_internet_quality(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>% 
-  count(internet_quality) %>% 
-  ggplot(aes(x = internet_quality, y = n, fill = internet_quality)) +
-  geom_col() +
-  labs(
-    title = "Distribución de la calidad de internet",
-    x = "Calidad de internet",
-    y = "Frecuencia"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_internet_quality(StudentsHabits)
 ```
 
 | ***Género***
 
 ```{r}
-library(dplyr)
-library(gt)
-
-StudentsHabits %>% 
-  count(gender) %>%
-  mutate(porcentaje = round(n / sum(n) * 100, 1)) %>%
-  gt() %>%
-  tab_header(
-    title    = "Distribución por Género",
-    subtitle = "Variable: Gender"
-  ) %>%
-  cols_label(
-    gender     = "Género",
-    n          = "Frecuencia",
-    porcentaje = "Porcentaje (%)"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/graficos.R")
+plot_gender(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>% 
-  count(gender) %>% 
-  ggplot(aes(x = gender, y = n, fill = gender)) +
-  geom_col(alpha = 0.85, width = 0.65) +
-theme_minimal(base_size = 13) +
-theme(
-  legend.position = "none",
-  plot.title = element_text(face = "bold")
-) +
-  labs(
-    title = "Distribución por género",
-    x = "Género",
-    y = "Frecuencia"
-  ) +
-  theme_minimal()
+source("R/tablas.R")
+tabla_gender(StudentsHabits)
 ```
 
 ```{r}
-library(dplyr)
-library(gt)
-
-StudentsHabits %>% 
-  count(parental_education_level) %>%
-  mutate(porcentaje = round(n / sum(n) * 100, 1)) %>%
-  gt() %>%
-  tab_header(
-    title    = "Distribución por Nivel Educativo de los Padres",
-    subtitle = "Variable: Parental Education Level"
-  ) %>%
-  cols_label(
-    parental_education_level = "Nivel Educativo",
-    n                        = "Frecuencia",
-    porcentaje               = "Porcentaje (%)"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_parental_education(StudentsHabits)
 ```
 
 | ***Nivel educativo de los padres***
 
 ```{r}
-StudentsHabits %>% 
-  count(parental_education_level) %>% 
-  ggplot(aes(x = parental_education_level, y = n, fill = parental_education_level)) +
-  geom_col(alpha = 0.85, width = 0.65) +
-theme_minimal(base_size = 13) +
-theme(
-  legend.position = "none",
-  plot.title = element_text(face = "bold")
-) +
-  labs(
-    title = "Distribución del nivel educativo parental",
-    x = "Nivel educativo parental",
-    y = "Frecuencia"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_parental_education(StudentsHabits)
 ```
 
 Este análisis descriptivo permite identificar la composición del dataset, la frecuencia de las categorías y la estructura general de las variables antes de evaluar su relación con el rendimiento académico.
@@ -363,33 +185,8 @@ tabla_descriptiva(
 ```
 
 ```{r}
-library(broom)
-library(gt)
-
-cor.test(StudentsHabits$study_hours_per_day, StudentsHabits$exam_score) %>%
-  tidy() %>%
-  gt() %>%
-  tab_header(
-    title    = "Test de Correlación",
-    subtitle = "Study Hours Per Day vs Exam Score"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    estimate   = "Correlación (r)",
-    statistic  = "Estadístico (t)",
-    p.value    = "P-valor",
-    parameter  = "Grados de libertad",
-    conf.low   = "IC inferior (95%)",
-    conf.high  = "IC superior (95%)",
-    method     = "Método",
-    alternative = "Hipótesis"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_cor_study_exam(StudentsHabits)
 ```
 
 *Qué muestra:*
@@ -403,154 +200,25 @@ Existe una *relación positiva*: a más horas de estudio, mayor puntaje. Es prob
 ### ¿El tiempo en redes sociales afecta negativamente el rendimiento?
 
 ```{r}
-
-StudentsHabits %>% 
-  ggplot(aes(social_media_hours)) +
-  geom_density(fill = "white", color = "steelblue") +
-  labs(
-    title = "Distribución de horas en redes sociales",
-    x = "Horas en redes sociales",
-    y = "Densidad"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_densidad_social_media(StudentsHabits)
 ```
 
 ```{r}
-library(dplyr)
-library(gt)
-
-StudentsHabits %>%
-  summarise(
-    Minimo     = min(social_media_hours, na.rm = TRUE),
-    Q1         = quantile(social_media_hours, 0.25, na.rm = TRUE),
-    Mediana    = median(social_media_hours, na.rm = TRUE),
-    Media      = mean(social_media_hours, na.rm = TRUE),
-    Q3         = quantile(social_media_hours, 0.75, na.rm = TRUE),
-    Maximo     = max(social_media_hours, na.rm = TRUE),
-    Desvio_std = sd(social_media_hours, na.rm = TRUE),
-    Rango      = max(social_media_hours) - min(social_media_hours)
-  ) %>%
-  gt() %>%
-  tab_header(
-    title    = "Estadísticas Descriptivas",
-    subtitle = "Variable: Social Media Hours"
-  ) %>%
-  fmt_number(decimals = 2) %>%
-  cols_label(
-    Minimo     = "Mínimo",
-    Q1         = "Q1 (25%)",
-    Mediana    = "Mediana",
-    Media      = "Media",
-    Q3         = "Q3 (75%)",
-    Maximo     = "Máximo",
-    Desvio_std = "Desvío Estándar",
-    Rango      = "Rango"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_resumen_social_media(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>%
-  ggplot(aes(x = social_media_hours, y = exam_score)) +
-  geom_point(alpha = 0.45, size = 2, color = "steelblue") +
-geom_smooth(method = "lm", color = "firebrick", se = TRUE, linewidth = 1) +
-  labs(
-    title = "Uso de Redes Sociales vs Puntaje del Examen",
-    x = "Horas en redes sociales por día",
-    y = "Puntaje del examen"
-  ) +
-  theme_minimal()
-
+source("R/graficos.R")
+plot_social_media_vs_exam(StudentsHabits)
 ```
 
 ```{r}
-library(broom)
-library(gt)
-
-modelo_redes <- lm(exam_score ~ social_media_hours, data = StudentsHabits)
-
-# ---- 1. COEFICIENTES ----
-tidy(modelo_redes) %>%
-  gt() %>%
-  tab_header(
-    title    = "Coeficientes del Modelo de Regresión Simple",
-    subtitle = "exam_score ~ social_media_hours"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    term      = "Variable",
-    estimate  = "Estimado",
-    std.error = "Error Estándar",
-    statistic = "Estadístico (t)",
-    p.value   = "P-valor"
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#d4f4dd"),
-    locations = cells_body(rows = p.value < 0.05)
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#ffd4d4"),
-    locations = cells_body(rows = p.value >= 0.05)
-  ) %>%
-  tab_footnote(
-    footnote = "Verde: p < 0.05 (significativo) | Rojo: p ≥ 0.05 (no significativo)"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 2. MÉTRICAS GLOBALES ----
-glance(modelo_redes) %>%
-  gt() %>%
-  tab_header(
-    title    = "Métricas Globales del Modelo",
-    subtitle = "exam_score ~ social_media_hours"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    r.squared     = "R²",
-    adj.r.squared = "R² Ajustado",
-    sigma         = "Sigma",
-    statistic     = "F-statistic",
-    p.value       = "P-valor",
-    df            = "GL",
-    logLik        = "Log-Likelihood",
-    AIC           = "AIC",
-    BIC           = "BIC",
-    deviance      = "Devianza",
-    df.residual   = "GL Residuos",
-    nobs          = "N observaciones"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 3. VALORES AJUSTADOS Y RESIDUOS ----
-augment(modelo_redes) %>%
-  head(10) %>%
-  gt() %>%
-  tab_header(
-    title    = "Valores Ajustados y Residuos",
-    subtitle = "Primeras 10 observaciones"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_coef_modelo_redes(StudentsHabits)
+tabla_metricas_modelo_redes(StudentsHabits)
+tabla_residuos_modelo_redes(StudentsHabits)
 ```
 
 *Qué muestra:*
@@ -564,144 +232,25 @@ Se observa una tendencia negativa entre el tiempo dedicado a redes sociales y el
 ### ¿La calidad del sueño (horas dormidas) influye en el rendimiento?
 
 ```{r}
-StudentsHabits %>% 
-  ggplot(aes(sleep_hours)) +
-  geom_density(fill = "white", color = "steelblue") +
-  labs(
-    title = "Distribución de horas de sueño",
-    x = "Horas de sueño",
-    y = "Densidad"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_densidad_sleep_hours(StudentsHabits)
 ```
 
 ```{r}
-
-library(dplyr)
-library(gt)
-
-StudentsHabits %>%
-  summarise(
-    Minimo     = min(sleep_hours, na.rm = TRUE),
-    Q1         = quantile(sleep_hours, 0.25, na.rm = TRUE),
-    Mediana    = median(sleep_hours, na.rm = TRUE),
-    Media      = mean(sleep_hours, na.rm = TRUE),
-    Q3         = quantile(sleep_hours, 0.75, na.rm = TRUE),
-    Maximo     = max(sleep_hours, na.rm = TRUE),
-    Desvio_std = sd(sleep_hours, na.rm = TRUE),
-    Rango      = max(sleep_hours) - min(sleep_hours)
-  ) %>%
-  gt() %>%
-  tab_header(
-    title    = "Estadísticas Descriptivas",
-    subtitle = "Variable: Sleep Hours"
-  ) %>%
-  fmt_number(decimals = 2) %>%
-  cols_label(
-    Minimo     = "Mínimo",
-    Q1         = "Q1 (25%)",
-    Mediana    = "Mediana",
-    Media      = "Media",
-    Q3         = "Q3 (75%)",
-    Maximo     = "Máximo",
-    Desvio_std = "Desvío Estándar",
-    Rango      = "Rango"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_resumen_sleep_hours(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>%
-  ggplot(aes(x = sleep_hours, y = exam_score)) +
-  geom_point(alpha = 0.4, color = "steelblue") +
-  geom_smooth(method = "lm", color = "red", se = TRUE) +
-  labs(
-    title = "Horas de Sueño vs Puntaje del Examen",
-    x = "Horas de sueño por día",
-    y = "Puntaje del examen"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_sleep_vs_exam(StudentsHabits)
 ```
 
 ```{r}
-
-library(broom)
-library(gt)
-
-modelo_sueno <- lm(exam_score ~ sleep_hours, data = StudentsHabits)
-
-# ---- 1. COEFICIENTES (reemplaza summary()) ----
-tidy(modelo_sueno) %>%
-  gt() %>%
-  tab_header(
-    title    = "Coeficientes del Modelo",
-    subtitle = "exam_score ~ sleep_hours"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    term      = "Término",
-    estimate  = "Estimado",
-    std.error = "Error Estándar",
-    statistic = "Estadístico (t)",
-    p.value   = "P-valor"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 2. MÉTRICAS GLOBALES DEL MODELO ----
-glance(modelo_sueno) %>%
-  gt() %>%
-  tab_header(
-    title    = "Métricas Globales del Modelo",
-    subtitle = "exam_score ~ sleep_hours"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    r.squared     = "R²",
-    adj.r.squared = "R² Ajustado",
-    sigma         = "Sigma",
-    statistic     = "F-statistic",
-    p.value       = "P-valor",
-    df            = "GL",
-    logLik        = "Log-Likelihood",
-    AIC           = "AIC",
-    BIC           = "BIC",
-    deviance      = "Devianza",
-    df.residual   = "GL Residuos",
-    nobs          = "N observaciones"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 3. VALORES AJUSTADOS Y RESIDUOS ----
-augment(modelo_sueno) %>%
-  head(10) %>%
-  gt() %>%
-  tab_header(
-    title    = "Valores Ajustados y Residuos",
-    subtitle = "Primeras 10 observaciones"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
+source("R/tablas.R")
+tabla_coef_modelo_sueno(StudentsHabits)
+tabla_metricas_modelo_sueno(StudentsHabits)
+tabla_residuos_modelo_sueno(StudentsHabits)
 ```
 
 *Qué muestra:*
@@ -715,166 +264,26 @@ Se observa una tendencia positiva entre las horas de sueño y el rendimiento aca
 ### ¿La salud mental impacta en el rendimiento académico?
 
 ```{r}
-StudentsHabits %>% 
-  ggplot(aes(mental_health_rating)) +
-  geom_histogram(fill = "white", color = "steelblue", bins = 10) +
-  labs(
-    title = "Distribución del rating de salud mental",
-    x = "Salud mental",
-    y = "Frecuencia"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_mental_health_rating(StudentsHabits)
 ```
 
 ```{r}
-library(dplyr)
-library(gt)
-
-StudentsHabits %>%
-  summarise(
-    Minimo     = min(mental_health_rating, na.rm = TRUE),
-    Q1         = quantile(mental_health_rating, 0.25, na.rm = TRUE),
-    Mediana    = median(mental_health_rating, na.rm = TRUE),
-    Media      = mean(mental_health_rating, na.rm = TRUE),
-    Q3         = quantile(mental_health_rating, 0.75, na.rm = TRUE),
-    Maximo     = max(mental_health_rating, na.rm = TRUE),
-    Desvio_std = sd(mental_health_rating, na.rm = TRUE),
-    Rango      = max(mental_health_rating) - min(mental_health_rating)
-  ) %>%
-  gt() %>%
-  tab_header(
-    title    = "Estadísticas Descriptivas",
-    subtitle = "Variable: Mental Health Rating"
-  ) %>%
-  fmt_number(decimals = 2) %>%
-  cols_label(
-    Minimo     = "Mínimo",
-    Q1         = "Q1 (25%)",
-    Mediana    = "Mediana",
-    Media      = "Media",
-    Q3         = "Q3 (75%)",
-    Maximo     = "Máximo",
-    Desvio_std = "Desvío Estándar",
-    Rango      = "Rango"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_resumen_mental_health(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>%
-  ggplot(aes(x = factor(mental_health_rating), y = exam_score, fill = factor(mental_health_rating))) +
-  geom_boxplot(alpha = 0.7) +
-  scale_fill_brewer(palette = "RdYlGn") +
-  labs(
-    title = "Rating de Salud Mental vs Puntaje del Examen",
-    x = "Rating de salud mental (1 = malo, 10 = excelente)",
-    y = "Puntaje del examen",
-    fill = "Rating"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_mental_health_vs_exam(StudentsHabits)
 ```
 
 ```{r}
-library(broom)
-library(gt)
-
-modelo_mental <- lm(exam_score ~ mental_health_rating, data = StudentsHabits)
-
-# ---- 1. COEFICIENTES DEL MODELO ----
-tidy(modelo_mental) %>%
-  gt() %>%
-  tab_header(
-    title    = "Coeficientes del Modelo",
-    subtitle = "exam_score ~ mental_health_rating"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    term      = "Término",
-    estimate  = "Estimado",
-    std.error = "Error Estándar",
-    statistic = "Estadístico (t)",
-    p.value   = "P-valor"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 2. MÉTRICAS GLOBALES DEL MODELO ----
-glance(modelo_mental) %>%
-  gt() %>%
-  tab_header(
-    title    = "Métricas Globales del Modelo",
-    subtitle = "exam_score ~ mental_health_rating"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    r.squared     = "R²",
-    adj.r.squared = "R² Ajustado",
-    sigma         = "Sigma",
-    statistic     = "F-statistic",
-    p.value       = "P-valor",
-    df            = "GL",
-    logLik        = "Log-Likelihood",
-    AIC           = "AIC",
-    BIC           = "BIC",
-    deviance      = "Devianza",
-    df.residual   = "GL Residuos",
-    nobs          = "N observaciones"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 3. VALORES AJUSTADOS Y RESIDUOS ----
-augment(modelo_mental) %>%
-  head(10) %>%
-  gt() %>%
-  tab_header(
-    title    = "Valores Ajustados y Residuos",
-    subtitle = "Primeras 10 observaciones"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 4. CORRELACIÓN DE SPEARMAN ----
-cor.test(StudentsHabits$mental_health_rating, StudentsHabits$exam_score, 
-         method = "spearman") %>%
-  tidy() %>%
-  gt() %>%
-  tab_header(
-    title    = "Test de Correlación de Spearman",
-    subtitle = "Mental Health Rating vs Exam Score"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    estimate   = "Correlación (ρ)",
-    statistic  = "Estadístico (S)",
-    p.value    = "P-valor",
-    method     = "Método",
-    alternative = "Hipótesis"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_coef_modelo_mental(StudentsHabits)
+tabla_metricas_modelo_mental(StudentsHabits)
+tabla_residuos_modelo_mental(StudentsHabits)
+tabla_cor_spearman_mental(StudentsHabits)
 ```
 
 *Qué muestra:*
@@ -890,140 +299,29 @@ Sin embargo, la magnitud de esta relación es menor en comparación con otras va
 ### ¿La dieta y el ejercicio se relacionan con el rendimiento?
 
 ```{r}
-StudentsHabits %>%
-  ggplot(aes(x = exercise_frequency, y = exam_score, color = diet_quality)) +
-  geom_jitter(alpha = 0.5, width = 0.2) +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(
-    title = "Frecuencia de Ejercicio y Calidad de Dieta vs Puntaje",
-    x = "Días de ejercicio por semana",
-    y = "Puntaje del examen",
-    color = "Calidad de dieta"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_ejercicio_dieta_vs_exam(StudentsHabits)
 ```
 
 ```{r}
-#| echo: false
-
-library(broom)
-library(gt)
-
-# Modelo de regresión simple
-modelo_ejercicio <- lm(exam_score ~ exercise_frequency + diet_quality, 
-                       data = StudentsHabits)
-
-# ---- 1. COEFICIENTES ----
-tidy(modelo_ejercicio) %>%
-  gt() %>%
-  tab_header(
-    title    = "Modelo de Regresión Simple",
-    subtitle = "exam_score ~ exercise_frequency + diet_quality"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    term      = "Variable",
-    estimate  = "Estimado",
-    std.error = "Error Estándar",
-    statistic = "Estadístico (t)",
-    p.value   = "P-valor"
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#d4f4dd"),
-    locations = cells_body(rows = p.value < 0.05)
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#ffd4d4"),
-    locations = cells_body(rows = p.value >= 0.05)
-  ) %>%
-  tab_footnote(
-    footnote = "Verde: p < 0.05 (significativo) | Rojo: p ≥ 0.05 (no significativo)"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 2. MÉTRICAS GLOBALES ----
-glance(modelo_ejercicio) %>%
-  gt() %>%
-  tab_header(
-    title    = "Métricas Globales del Modelo",
-    subtitle = "exam_score ~ exercise_frequency + diet_quality"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    r.squared     = "R²",
-    adj.r.squared = "R² Ajustado",
-    sigma         = "Sigma",
-    statistic     = "F-statistic",
-    p.value       = "P-valor",
-    df            = "GL",
-    logLik        = "Log-Likelihood",
-    AIC           = "AIC",
-    BIC           = "BIC",
-    deviance      = "Devianza",
-    df.residual   = "GL Residuos",
-    nobs          = "N observaciones"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_coef_modelo_ejercicio(StudentsHabits)
+tabla_metricas_modelo_ejercicio(StudentsHabits)
 ```
 
 ```{r}
-library(dplyr)
-library(gt)
-
-StudentsHabits %>% 
-  count(diet_quality) %>%
-  mutate(porcentaje = round(n / sum(n) * 100, 1)) %>%
-  gt() %>%
-  tab_header(
-    title    = "Distribución de Calidad de Dieta",
-    subtitle = "Variable: Diet Quality"
-  ) %>%
-  cols_label(
-    diet_quality = "Calidad de Dieta",
-    n            = "Frecuencia",
-    porcentaje   = "Porcentaje (%)"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_diet_quality(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>% 
-  count(diet_quality) %>% 
-  ggplot(aes(x = diet_quality, y = n, fill = diet_quality)) +
-  geom_col() +
-  labs(
-    title = "Distribución de la calidad de dieta",
-    x = "Calidad de dieta",
-    y = "Frecuencia"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_diet_quality(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>% 
-  ggplot(aes(x = diet_quality, y = exam_score, fill = diet_quality)) +
-  geom_boxplot() +
-  labs(
-    title = "Puntaje según calidad de dieta",
-    x = "Calidad de dieta",
-    y = "Puntaje del examen"
-  ) +
-  theme_minimal()
+source("R/graficos.R")
+plot_diet_quality_vs_exam(StudentsHabits)
 ```
 
 *Qué muestra:*
@@ -1041,91 +339,18 @@ Los resultados muestran que la frecuencia de ejercicio tiene un efecto positivo 
 ### ¿Los estudiantes con trabajo a tiempo parcial rinden menos?
 
 ```{r}
-
-library(broom)
-library(gt)
-
-# Separar grupos
-con_trabajo <- StudentsHabits %>% filter(part_time_job == "Yes") %>% pull(exam_score)
-sin_trabajo <- StudentsHabits %>% filter(part_time_job == "No")  %>% pull(exam_score)
-
-# Guardamos el resultado primero
-resultado_ttest <- t.test(con_trabajo, sin_trabajo)
-
-# Tabla con broom + gt
-tidy(resultado_ttest) %>%
-  gt() %>%
-  tab_header(
-    title    = "Test T de Medias Independientes",
-    subtitle = "Exam Score: Con trabajo vs Sin trabajo"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    estimate    = "Diferencia de medias",
-    estimate1   = "Media con trabajo",
-    estimate2   = "Media sin trabajo",
-    statistic   = "Estadístico (t)",
-    p.value     = "P-valor",
-    parameter   = "Grados de libertad",
-    conf.low    = "IC inferior (95%)",
-    conf.high   = "IC superior (95%)",
-    method      = "Método",
-    alternative = "Hipótesis"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# Gráfico
-StudentsHabits %>%
-  ggplot(aes(x = part_time_job, y = exam_score, fill = part_time_job)) +
-  geom_boxplot(alpha = 0.7) +
-  stat_summary(fun = mean, geom = "point", shape = 23,
-               size = 4, fill = "white") +
-  labs(
-    title = "¿Trabajar afecta el rendimiento académico?",
-    x = "Trabajo a tiempo parcial",
-    y = "Puntaje del examen"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "none")
+source("R/tablas.R")
+source("R/graficos.R")
+tabla_ttest_trabajo(StudentsHabits)
+plot_trabajo_vs_exam(StudentsHabits)
 ```
 
 ```{r}
-con_trabajo <- StudentsHabits$exam_score[StudentsHabits$part_time_job == "Yes"]
-sin_trabajo  <- StudentsHabits$exam_score[StudentsHabits$part_time_job == "No"]
+tabla_ttest_trabajo(StudentsHabits)
 ```
 
 ```{r}
-t.test(con_trabajo, sin_trabajo) %>%
-  tidy() %>%
-  gt() %>%
-  tab_header(
-    title    = "Test T de Medias Independientes",
-    subtitle = "Exam Score: Con trabajo vs Sin trabajo"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    estimate    = "Diferencia de medias",
-    estimate1   = "Media con trabajo",
-    estimate2   = "Media sin trabajo",
-    statistic   = "Estadístico (t)",
-    p.value     = "P-valor",
-    parameter   = "Grados de libertad",
-    conf.low    = "IC inferior (95%)",
-    conf.high   = "IC superior (95%)",
-    method      = "Método",
-    alternative = "Hipótesis"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+tabla_ttest_trabajo(StudentsHabits)
 ```
 
 *Qué muestra:*
@@ -1139,19 +364,7 @@ Los resultados no muestran diferencias estadísticamente significativas entre am
 ### ¿La calidad de internet afecta en el rendimiento?
 
 ```{r}
-StudentsHabits %>%
-  ggplot(aes(x = internet_quality, y = exam_score, fill = internet_quality)) +
-  geom_boxplot(alpha = 0.75, width = 0.6) +
-  labs(
-    title = "Puntaje según calidad de internet",
-    x = "Calidad de internet",
-    y = "Puntaje del examen"
-  ) +
-  theme_minimal(base_size = 13) +
-  theme(
-    legend.position = "none",
-    plot.title = element_text(face = "bold")
-  )
+plot_internet_quality_vs_exam(StudentsHabits)
 ```
 
 #### Tabla del nivel educativo de los padres
@@ -1160,33 +373,11 @@ StudentsHabits %>%
 #| echo: false
 #| label: tabla_nivel_educativo
 #| tbl-cap: "Nivel educativo de los padres"
-
-StudentsHabits %>% 
-  count(parental_education_level) %>%
-  mutate(porcentaje = round(n / sum(n) * 100, 1)) %>%
-  gt() %>%
-  tab_header(
-    title    = "Nivel Educativo de los Padres",
-    subtitle = "Variable: Parental Education Level"
-  ) %>%
-  cols_label(
-    parental_education_level = "Nivel Educativo",
-    n                        = "Número",
-    porcentaje               = "Porcentaje (%)"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+tabla_parental_education(StudentsHabits)
 ```
 
 ```{r}
-StudentsHabits %>% 
-  ggplot(aes(x = parental_education_level, y = exam_score, fill = parental_education_level)) +
-  geom_boxplot() +
-  theme_minimal()
+plot_parental_education_vs_exam(StudentsHabits)
 ```
 
 #### Distribución del género
@@ -1195,11 +386,7 @@ StudentsHabits %>%
 #| echo: false
 #| label: figure_genero
 #| fig-cap: "Distribución del género"
-
-StudentsHabits %>% 
-  count(gender) %>% 
-  ggplot(aes(x = gender, y = n, fill = gender)) +
-  geom_col()
+plot_gender(StudentsHabits)
 ```
 
 ------------------------------------------------------------------------
@@ -1211,89 +398,19 @@ StudentsHabits %>%
 Para observar si el nivel educativo parental se relaciona con el rendimiento académico, se analiza la distribución del `exam_score` según cada categoría de `parental_education_level`.
 
 ```{r}
-
-StudentsHabits %>% 
-  ggplot(aes(x = parental_education_level, y = exam_score, fill = parental_education_level)) +
-  geom_boxplot(alpha = 0.75, width = 0.6) +
-  labs(
-    title = "Rendimiento según nivel educativo parental",
-    subtitle = "Comparación del puntaje del examen por nivel educativo de los padres",
-    x = "Nivel educativo parental",
-    y = "Puntaje del examen"
-  ) +
-  theme_minimal(base_size = 13) +
-  theme(
-    legend.position = "none",
-    plot.title = element_text(face = "bold"),
-    axis.text.x = element_text(angle = 20, hjust = 1)
-  )
+source("R/graficos.R")
+plot_parental_education_vs_exam(StudentsHabits)
 ```
 
 ```{r}
-correlaciones_exam <- StudentsHabits %>%
-  select(
-    study_hours_per_day,
-    social_media_hours,
-    sleep_hours,
-    attendance_percentage,
-    mental_health_rating,
-    exercise_frequency,
-    netflix_hours,
-    exam_score
-  ) %>%
-  cor(use = "complete.obs") %>%
-  as.data.frame() %>%
-  rownames_to_column("variable") %>%
-  select(variable, correlacion_con_exam_score = exam_score) %>%
-  filter(variable != "exam_score") %>%
-  mutate(
-    correlacion_abs = abs(correlacion_con_exam_score),
-    variable = reorder(variable, correlacion_abs)
-  )
-
-correlaciones_exam %>%
-  ggplot(aes(x = variable, y = correlacion_con_exam_score, fill = correlacion_con_exam_score)) +
-  geom_col(width = 0.7) +
-  coord_flip() +
-  labs(
-    title = "Relación de cada hábito con el puntaje del examen",
-    subtitle = "Correlación entre variables cuantitativas y exam_score",
-    x = "Variable",
-    y = "Correlación con exam_score"
-  ) +
-  theme_minimal(base_size = 13) +
-  theme(
-    legend.position = "none",
-    plot.title = element_text(face = "bold")
-  )
+source("R/graficos.R")
+plot_correlaciones_exam(StudentsHabits)
 ```
 
 ```{r}
 #| echo: false
-
-correlaciones_exam %>%
-  arrange(desc(correlacion_abs)) %>%
-  select(variable, correlacion_con_exam_score) %>%
-  gt() %>%
-  tab_header(
-    title    = "Ranking de Correlaciones con Rendimiento Académico",
-    subtitle = "Variable dependiente: Exam Score"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    variable                  = "Variable",
-    correlacion_con_exam_score = "Correlación con Exam Score"
-  ) %>%
-  tab_style(
-    style = cell_fill(color = "#d4edff"),
-    locations = cells_body(rows = 1)
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_ranking_correlaciones(StudentsHabits)
 ```
 
 #### Conclusión
@@ -1305,46 +422,8 @@ Por otro lado, factores como el sueño, la asistencia y la salud mental presenta
 ### ¿Cómo es el estudiante con alto y bajo puntaje?
 
 ```{r}
-perfil_rendimiento <- StudentsHabits %>%
-  mutate(
-    grupo_rendimiento = case_when(
-      exam_score >= quantile(exam_score, 0.75, na.rm = TRUE) ~ "Alto rendimiento",
-      exam_score <= quantile(exam_score, 0.25, na.rm = TRUE) ~ "Bajo rendimiento",
-      TRUE ~ "Rendimiento medio"
-    )
-  ) %>%
-  filter(grupo_rendimiento != "Rendimiento medio") %>%
-  group_by(grupo_rendimiento) %>%
-  summarise(
-    `Horas de estudio` = mean(study_hours_per_day, na.rm = TRUE),
-    `Redes sociales` = mean(social_media_hours, na.rm = TRUE),
-    `Horas de sueño` = mean(sleep_hours, na.rm = TRUE),
-    `Netflix` = mean(netflix_hours, na.rm = TRUE),
-    `Salud mental` = mean(mental_health_rating, na.rm = TRUE),
-    `Asistencia` = mean(attendance_percentage, na.rm = TRUE)
-  ) %>%
-  pivot_longer(
-    cols = -grupo_rendimiento,
-    names_to = "variable",
-    values_to = "promedio"
-  )
-
-perfil_rendimiento %>%
-  ggplot(aes(x = variable, y = promedio, fill = grupo_rendimiento)) +
-  geom_col(position = "dodge", width = 0.7) +
-  coord_flip() +
-  labs(
-    title = "Perfil comparado de estudiantes según rendimiento",
-    subtitle = "Promedios de hábitos en estudiantes de alto y bajo puntaje",
-    x = "Variable",
-    y = "Promedio",
-    fill = "Grupo"
-  ) +
-  theme_minimal(base_size = 13) +
-  theme(
-    plot.title = element_text(face = "bold"),
-    legend.position = "bottom"
-  )
+source("R/graficos.R")
+plot_perfil_rendimiento(StudentsHabits)
 ```
 
 El análisis comparativo entre estudiantes de alto y bajo rendimiento permite identificar diferencias claras en sus hábitos. Los estudiantes con mejores puntajes presentan, en promedio, más horas de estudio y mayores niveles de asistencia, lo que refuerza la idea de que el compromiso académico es un factor central en el rendimiento.
@@ -1360,94 +439,10 @@ En conjunto, este análisis muestra que el rendimiento académico no responde a 
 Luego del análisis exploratorio y del estudio individual de las variables, se estima un modelo de regresión lineal múltiple con el objetivo de evaluar el *efecto conjunto de los hábitos y características de los estudiantes sobre el rendimiento académico*.
 
 ```{r}
-
-library(broom)
-library(gt)
-
-modelo <- lm(exam_score ~ study_hours_per_day + social_media_hours +
-               sleep_hours + attendance_percentage + mental_health_rating +
-               exercise_frequency + netflix_hours + diet_quality +
-               part_time_job + parental_education_level + internet_quality +
-               extracurricular_participation + gender,
-             data = StudentsHabits)
-
-# ---- 1. COEFICIENTES DEL MODELO ----
-tidy(modelo) %>%
-  gt() %>%
-  tab_header(
-    title    = "Coeficientes del Modelo de Regresión Múltiple",
-    subtitle = "Variable dependiente: Exam Score"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    term      = "Variable",
-    estimate  = "Estimado",
-    std.error = "Error Estándar",
-    statistic = "Estadístico (t)",
-    p.value   = "P-valor"
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#d4f4dd"),
-    locations = cells_body(rows = p.value < 0.05)
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#ffd4d4"),
-    locations = cells_body(rows = p.value >= 0.05)
-  ) %>%
-  tab_footnote(
-    footnote  = "Verde: p < 0.05 (significativo) | Rojo: p ≥ 0.05 (no significativo)"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 2. MÉTRICAS GLOBALES DEL MODELO ----
-glance(modelo) %>%
-  gt() %>%
-  tab_header(
-    title    = "Métricas Globales del Modelo",
-    subtitle = "Variable dependiente: Exam Score"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    r.squared     = "R²",
-    adj.r.squared = "R² Ajustado",
-    sigma         = "Sigma",
-    statistic     = "F-statistic",
-    p.value       = "P-valor",
-    df            = "GL",
-    logLik        = "Log-Likelihood",
-    AIC           = "AIC",
-    BIC           = "BIC",
-    deviance      = "Devianza",
-    df.residual   = "GL Residuos",
-    nobs          = "N observaciones"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 3. VALORES AJUSTADOS Y RESIDUOS ----
-augment(modelo) %>%
-  head(10) %>%
-  gt() %>%
-  tab_header(
-    title    = "Valores Ajustados y Residuos",
-    subtitle = "Primeras 10 observaciones"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+source("R/tablas.R")
+tabla_coef_modelo_multiple(StudentsHabits)
+tabla_metricas_modelo_multiple(StudentsHabits)
+tabla_residuos_modelo_multiple(StudentsHabits)
 ```
 
 ------------------------------------------------------------------------
@@ -1455,140 +450,18 @@ augment(modelo) %>%
 ## Modelo con interacciones
 
 ```{r}
+source("R/tablas.R")
 #| echo: false
-
-library(broom)
-library(gt)
-
-modelo_interacciones <- lm(
-  exam_score ~ 
-    study_hours_per_day * sleep_hours +
-    study_hours_per_day * mental_health_rating +
-    social_media_hours * sleep_hours +
-    diet_quality + parental_education_level,
-  data = StudentsHabits
-)
-
-# ---- 1. COEFICIENTES DEL MODELO ----
-tidy(modelo_interacciones) %>%
-  gt() %>%
-  tab_header(
-    title    = "Coeficientes del Modelo con Interacciones",
-    subtitle = "Variable dependiente: Exam Score"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    term      = "Variable",
-    estimate  = "Estimado",
-    std.error = "Error Estándar",
-    statistic = "Estadístico (t)",
-    p.value   = "P-valor"
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#d4f4dd"),
-    locations = cells_body(rows = p.value < 0.05)
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#ffd4d4"),
-    locations = cells_body(rows = p.value >= 0.05)
-  ) %>%
-  tab_footnote(
-    footnote  = "Verde: p < 0.05 (significativo) | Rojo: p ≥ 0.05 (no significativo)"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 2. MÉTRICAS GLOBALES DEL MODELO ----
-glance(modelo_interacciones) %>%
-  gt() %>%
-  tab_header(
-    title    = "Métricas Globales del Modelo",
-    subtitle = "Variable dependiente: Exam Score"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    r.squared     = "R²",
-    adj.r.squared = "R² Ajustado",
-    sigma         = "Sigma",
-    statistic     = "F-statistic",
-    p.value       = "P-valor",
-    df            = "GL",
-    logLik        = "Log-Likelihood",
-    AIC           = "AIC",
-    BIC           = "BIC",
-    deviance      = "Devianza",
-    df.residual   = "GL Residuos",
-    nobs          = "N observaciones"
-  ) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
-
-# ---- 3. VALORES AJUSTADOS Y RESIDUOS ----
-augment(modelo_interacciones) %>%
-  head(10) %>%
-  gt() %>%
-  tab_header(
-    title    = "Valores Ajustados y Residuos",
-    subtitle = "Primeras 10 observaciones"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  tab_options(
-    table.font.size           = 14,
-    heading.background.color  = "steelblue",
-    heading.title.font.size   = 16,
-    column_labels.font.weight = "bold"
-  )
+tabla_coef_modelo_interacciones(StudentsHabits)
+tabla_metricas_modelo_interacciones(StudentsHabits)
+tabla_residuos_modelo_interacciones(StudentsHabits)
 ```
 
 Este modelo permite evaluar **si el efecto de una variable depende de otra.** Se analizaron *interacciones entre horas de estudio y sueño, horas de estudio y salud mental, y redes sociales y sueño.* A partir del valor de los coeficientes y su significancia, se seleccionarán las interacciones más relevantes para explicar el rendimiento académico.
 
 ```{r}
-
-library(broom)
-library(gt)
-
-# Modelo actualizado con netflix_hours
-modelo_interacciones <- lm(
-  exam_score ~ 
-    study_hours_per_day * sleep_hours +
-    study_hours_per_day * mental_health_rating +
-    social_media_hours * sleep_hours +
-    diet_quality + parental_education_level +
-    netflix_hours,                              # ← agregada acá
-  data = StudentsHabits
-)
-
-tidy(modelo_interacciones) %>%
-  gt() %>%
-  tab_header(
-    title    = "Resumen del Modelo con Interacciones",
-    subtitle = "Variable dependiente: Exam Score"
-  ) %>%
-  fmt_number(decimals = 4) %>%
-  cols_label(
-    term      = "Variable",
-    estimate  = "Estimado",
-    std.error = "Error Estándar",
-    statistic = "Estadístico (t)",
-    p.value   = "P-valor"
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#d4f4dd"),
-    locations = cells_body(rows = p.value < 0.05)
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#ffd4d4"),
-    locations = cells_body(rows = p.value >= 0.05)
-  ) 
- 
+source("R/tablas.R")
+tabla_modelo_interacciones(StudentsHabits)
 ```
 
 ### Interpretación del modelo
