@@ -8,19 +8,18 @@ date: "Mayo 2026"
 format:
   revealjs:
     theme: simple
+    css: styles.css
     slide-number: true
     transition: fade
     progress: true
     center: false
-    css: styles.css
+    width: 1200
+    height: 700
 execute:
   echo: false
   warning: false
   message: false
 ---
-
-```         
-```
 
 ```{r}
 library(tidyverse)
@@ -32,104 +31,187 @@ source("R/tablas.R")
 StudentsHabits <- traer_datos()
 ```
 
+::: seccion-label
+UNSAM · Análisis de Datos · Mayo 2026
+:::
 
-### Pregunta central
+# Hábitos y Rendimiento Académico
 
-Analizar cómo distintos hábitos de vida influyen en el rendimiento académico de estudiantes universitarios.
+**Melina Ayelen Varhulik · María Trinidad Loncarica**
 
-### Variable objetivo
+::: firma
+Universidad Nacional de San Martín · Dataset: Student Habits Performance
+:::
 
-**exam_score**
+------------------------------------------------------------------------
 
-Puntaje obtenido por cada estudiante en el examen..
+## El problema
 
-## Variables analizadas
+::: seccion-label
+Introducción
+:::
 
+::: callout-ln
+¿Cómo influyen los hábitos de vida en el rendimiento académico de estudiantes universitarios?
+:::
+
+En este trabajo analizamos el dataset `student_habits_performance.csv`, que contiene información detallada sobre hábitos y rendimiento de estudiantes universitarios.
+
+**Hipótesis:** los hábitos de vida —horas de estudio, descanso, uso de redes sociales y salud mental— tienen un impacto significativo en el rendimiento académico medido a través de `exam_score`.
+
+------------------------------------------------------------------------
+
+## Variables del análisis
+
+::: seccion-label
+Metodología
+:::
+
+::::: columns
+::: {.column width="48%"}
 ### Hábitos académicos
 
-- Horas de estudio
-- Asistencia
-- Trabajo parcial
+-   `study_hours_per_day` — continua
+-   `attendance_percentage` — continua
+-   `part_time_job` — dicotómica
+:::
 
+::: {.column width="48%"}
 ### Hábitos de vida
 
-- Sueño
-- Redes sociales
-- Salud mental
-- Ejercicio
-- Dieta
-- Calidad de internet
+-   `sleep_hours` — continua
+-   `social_media_hours` — continua
+-   `mental_health_rating` — continua
+-   `exercise_frequency` — discreta
+-   `diet_quality` — ordinal
+-   `internet_quality` — ordinal
+:::
+:::::
 
----
+**Variable objetivo:** `exam_score` — puntaje continuo del examen final.
+
+------------------------------------------------------------------------
 
 ## Distribución del rendimiento académico
 
+::: seccion-label
+Análisis exploratorio
+:::
 
-```{r}
+```{r fig-distribucion, fig.height=4.2, fig.width=9}
 plot_exam_score(StudentsHabits)
 ```
 
+------------------------------------------------------------------------
 
----
+## Hallazgo principal: horas de estudio
 
-## Hallazgo principal
+::: seccion-label
+Pregunta 1 · ¿Las horas de estudio se relacionan con el puntaje?
+:::
 
-Las horas de estudio son el factor más importante
+::: callout-ln
+Correlación positiva fuerte: r = 0.825, p-value \< 0.001
+:::
 
-A mayor cantidad de horas de estudio por día, mayor tiende a ser el puntaje del examen.
-
-
-```{r}
+```{r fig-estudio, fig.height=3.8, fig.width=9}
 plot_estudio_score(StudentsHabits)
 ```
 
+------------------------------------------------------------------------
 
-## Interpretación
+## Estadística descriptiva — exam score
 
-- A mayor cantidad de horas de estudio, mayor puntaje.
-- La relación observada es positiva y fuerte.
-- El compromiso académico es el predictor principal del rendimiento.
+::: seccion-label
+Pregunta 1 · Detalle
+:::
 
----
+```{r tabla-descriptiva}
+tabla_descriptiva(
+  StudentsHabits,
+  exam_score,
+  "Variable: Exam Score"
+)
+```
 
-## Factores que ayudan al rendimiento
+A mayor cantidad de horas de estudio, mayor puntaje. Es la variable con impacto más directo y visible en el rendimiento.
 
-- Más horas de sueño.
-- Mejor salud mental.
-- Mayor frecuencia de ejercicio.
-- Mejor calidad de dieta.
+------------------------------------------------------------------------
 
----
+## Redes sociales y rendimiento
 
-## Factores que perjudican el rendimiento
+::: seccion-label
+Pregunta 2 · ¿El tiempo en redes afecta negativamente?
+:::
 
-- Uso excesivo de redes sociales.
-- Menor asistencia.
-- Menor tiempo dedicado al estudio.
+::: callout-ln
+A medida que aumentan las horas en redes sociales, el puntaje del examen tiende a disminuir.
+:::
 
----
+```{r fig-redes, fig.height=3.8, fig.width=9}
+plot_social_media_vs_exam(StudentsHabits)
+```
 
-## Perfil del estudiante de alto rendimiento
+------------------------------------------------------------------------
 
-Los estudiantes con mejores resultados tienden a:
+## Sueño y rendimiento
 
-- Estudiar más horas.
-- Tener mayor asistencia.
-- Dormir mejor.
-- Utilizar menos redes sociales.
-- Presentar mejores indicadores de bienestar.
+::: seccion-label
+Pregunta 3 · ¿Las horas de sueño influyen?
+:::
 
----
+::: callout-ln
+Tendencia positiva: a mayor cantidad de horas de sueño, mayor puntaje en el examen.
+:::
 
-## Conclusiones
+```{r fig-sueno, fig.height=3.8, fig.width=9}
+plot_sleep_vs_exam(StudentsHabits)
+```
 
-### Principales hallazgos
+------------------------------------------------------------------------
 
-1. Las horas de estudio son el factor más importante.
-2. El sueño y la salud mental también influyen.
-3. Las redes sociales muestran una relación negativa.
-4. El rendimiento depende de múltiples hábitos combinados.
+## Salud mental y rendimiento
 
-### Conclusión final
+::: seccion-label
+Pregunta 4 · ¿La salud mental impacta en el rendimiento?
+:::
 
-Los hábitos académicos y de bienestar tienen una influencia significativa sobre el desempeño estudiantil.
+```{r fig-mental, fig.height=3.8, fig.width=9}
+plot_mental_health_vs_exam(StudentsHabits)
+```
+
+::: callout-ln
+Correlación de Spearman: rho = 0.32, p-value \< 0.001. Relación positiva moderada — la salud mental actúa como factor complementario.
+:::
+
+------------------------------------------------------------------------
+
+## Ejercicio y dieta
+
+::: seccion-label
+Pregunta 5 · ¿La dieta y el ejercicio se relacionan con el rendimiento?
+:::
+
+```{r fig-ejercicio, fig.height=3.8, fig.width=9}
+plot_ejercicio_dieta_vs_exam(StudentsHabits)
+```
+
+::: callout-ln
+El ejercicio tiene efecto positivo significativo (p \< 0.001). La dieta no presenta efecto significativo (p \> 0.05).
+:::
+
+------------------------------------------------------------------------
+
+## Trabajo a tiempo parcial
+
+::: seccion-label
+Pregunta 6 · ¿Los estudiantes que trabajan rinden menos?
+:::
+
+```{r fig-trabajo, fig.height=3.8, fig.width=9}
+plot_trabajo_vs_exam(StudentsHabits)
+```
+
+::: callout-ln
+No hay diferencias estadísticamente significativas entre quienes trabajan y quienes no (p-value = 0.39).
+:::

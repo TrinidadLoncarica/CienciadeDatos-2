@@ -1,56 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap');
+
 .reveal {
-  font-family: "Arial", sans-serif;
-  color: #1f2937;
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  color: #111111;
+  background-color: #ffffff;
 }
 
+.reveal .slides section {
+  text-align: left;
+  padding: 40px 80px;
+}
 
+/* Títulos grandes que ocupan espacio */
 .reveal h1 {
-  font-size: 2.6em;
-  font-weight: 800;
-  color: #0f172a;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.8em;
+  color: #111111;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
 .reveal h2 {
-  font-size: 1.7em;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 25px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.8em;
+  color: #111111;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  border-bottom: 2px solid #111111;
+  padding-bottom: 12px;
+  margin-bottom: 28px;
 }
 
-.reveal p, .reveal li {
-  font-size: 0.9em;
-  line-height: 1.35;
+.reveal h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #888888;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
-.reveal section {
+/* Etiqueta de sección */
+.seccion-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55em;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #aaaaaa;
+  margin-bottom: 4px;
+}
+
+/* Cuerpo de texto */
+.reveal p {
+  font-weight: 300;
+  line-height: 1.6;
+  color: #222222;
+}
+
+/* Listas */
+.reveal ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.reveal ul li {
+  font-size: 1em;
+  font-weight: 300;
+  line-height: 1.8;
+  color: #222222;
+  border-bottom: 1px solid #eeeeee;
+  padding: 6px 0;
+}
+
+.reveal ul li::before {
+  content: "→";
+  color: #aaaaaa;
+  margin-right: 12px;
+  font-weight: 400;
+}
+
+/* Callout */
+.callout-ln {
+  border-left: 3px solid #111111;
+  background: #f7f7f7;
+  padding: 16px 24px;
+  margin: 20px 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 1em;
+  color: #111111;
+  line-height: 1.6;
+}
+
+/* Slide de título */
+.slide-title h1 {
+  font-size: 4.5em;
+  line-height: 0.95;
+}
+
+.slide-title .subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7em;
+  font-weight: 300;
+  color: #888888;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 12px;
+}
+
+/* Firma */
+.firma {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55em;
+  font-weight: 400;
+  color: #aaaaaa;
+  border-top: 1px solid #eeeeee;
+  padding-top: 10px;
+  margin-top: 30px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Tablas */
+.reveal table {
+  font-size: 0.78em;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.reveal table th {
+  background: #111111;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  padding: 10px 16px;
   text-align: left;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.8em;
 }
 
-.title-slide {
-  text-align: center !important;
+.reveal table td {
+  padding: 9px 16px;
+  border-bottom: 1px solid #eeeeee;
+  font-weight: 300;
+  color: #222222;
 }
 
-.big-number {
-  font-size: 2.3em;
-  font-weight: 800;
-  color: #2563eb;
+.reveal table tr:nth-child(even) td {
+  background: #f7f7f7;
 }
 
-.card {
-  background: #f8fafc;
-  border-radius: 18px;
-  padding: 24px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+/* Número de slide */
+.reveal .slide-number {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6em;
+  color: #cccccc;
+  background: transparent;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
-  align-items: center;
-}
-
-.small-text {
-  font-size: 0.75em;
-  color: #475569;
+/* Columnas con separador */
+.reveal .columns {
+  gap: 40px;
 }
