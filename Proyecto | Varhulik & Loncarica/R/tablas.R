@@ -662,4 +662,168 @@ tabla_modelo_interacciones <- function(datos) {
       column_labels.font.weight = "bold"
     )
 }
+
+tabla_coef_modelo_multiple <- function(df) {
+  modelo <- lm(exam_score ~ study_hours_per_day + sleep_hours +
+                 social_media_hours + mental_health_rating +
+                 exercise_frequency + attendance_percentage,
+               data = df)
+  
+  tidy(modelo) |>
+    mutate(
+      term = case_when(
+        term == "(Intercept)"          ~ "Intercepto",
+        term == "study_hours_per_day"  ~ "Horas de estudio",
+        term == "sleep_hours"          ~ "Horas de sueño",
+        term == "social_media_hours"   ~ "Redes sociales",
+        term == "mental_health_rating" ~ "Salud mental",
+        term == "exercise_frequency"   ~ "Ejercicio",
+        term == "attendance_percentage"~ "Asistencia",
+        TRUE ~ term
+      ),
+      p.value = round(p.value, 4),
+      estimate = round(estimate, 3),
+      std.error = round(std.error, 3),
+      statistic = round(statistic, 3)
+    ) |>
+    rename(
+      Variable   = term,
+      Coeficiente = estimate,
+      `Error estándar` = std.error,
+      `Estadístico t`  = statistic,
+      `p-value`        = p.value
+    ) |>
+    gt() |>
+    tab_header(title = "Coeficientes del modelo de regresión múltiple") |>
+    tab_options(
+      table.background.color         = "#ffffff",
+      heading.background.color       = "#0a0a0a",
+      heading.title.font.color       = "#ffffff",
+      column_labels.background.color = "#0a0a0a",
+      column_labels.font.color       = "#ffffff",
+      column_labels.font.weight      = "bold",
+      table.border.top.color         = "#0a0a0a",
+      table.border.top.width         = px(2)
+    )
+}
+
+tabla_metricas_modelo_multiple <- function(df) {
+  modelo <- lm(exam_score ~ study_hours_per_day + sleep_hours +
+                 social_media_hours + mental_health_rating +
+                 exercise_frequency + attendance_percentage,
+               data = df)
+  
+  glance(modelo) |>
+    select(r.squared, adj.r.squared, sigma, statistic, p.value, df) |>
+    mutate(
+      r.squared     = round(r.squared, 4),
+      adj.r.squared = round(adj.r.squared, 4),
+      sigma         = round(sigma, 3),
+      statistic     = round(statistic, 3),
+      p.value       = round(p.value, 6)
+    ) |>
+    rename(
+      `R²`            = r.squared,
+      `R² ajustado`   = adj.r.squared,
+      `Error estándar`= sigma,
+      `Estadístico F` = statistic,
+      `p-value`       = p.value,
+      `Grados libertad` = df
+    ) |>
+    gt() |>
+    tab_header(title = "Métricas del modelo de regresión múltiple") |>
+    tab_options(
+      table.background.color         = "#ffffff",
+      heading.background.color       = "#0a0a0a",
+      heading.title.font.color       = "#ffffff",
+      column_labels.background.color = "#0a0a0a",
+      column_labels.font.color       = "#ffffff",
+      column_labels.font.weight      = "bold",
+      table.border.top.color         = "#0a0a0a",
+      table.border.top.width         = px(2)
+    )
+}
+
+tabla_coef_modelo_multiple <- function(df) {
+  modelo <- lm(exam_score ~ study_hours_per_day + sleep_hours +
+                 social_media_hours + mental_health_rating +
+                 exercise_frequency + attendance_percentage,
+               data = df)
+  
+  tidy(modelo) |>
+    mutate(
+      term = case_when(
+        term == "(Intercept)"           ~ "Intercepto",
+        term == "study_hours_per_day"   ~ "Horas de estudio",
+        term == "sleep_hours"           ~ "Horas de sueño",
+        term == "social_media_hours"    ~ "Redes sociales",
+        term == "mental_health_rating"  ~ "Salud mental",
+        term == "exercise_frequency"    ~ "Ejercicio",
+        term == "attendance_percentage" ~ "Asistencia",
+        TRUE ~ term
+      ),
+      p.value   = round(p.value, 4),
+      estimate  = round(estimate, 3),
+      std.error = round(std.error, 3),
+      statistic = round(statistic, 3)
+    ) |>
+    rename(
+      Variable         = term,
+      Coeficiente      = estimate,
+      `Error estándar` = std.error,
+      `Estadístico t`  = statistic,
+      `p-value`        = p.value
+    ) |>
+    gt() |>
+    tab_header(title = "Coeficientes del modelo de regresión múltiple") |>
+    tab_options(
+      table.background.color         = "#ffffff",
+      column_labels.background.color = "#0a0a0a",
+      column_labels.font.weight      = "bold",
+      table.border.top.color         = "#0a0a0a",
+      table.border.top.width         = px(2)
+    ) |>
+    tab_style(
+      style = cell_text(color = "#ffffff"),
+      locations = cells_column_labels()
+    )
+}
+
+tabla_metricas_modelo_multiple <- function(df) {
+  modelo <- lm(exam_score ~ study_hours_per_day + sleep_hours +
+                 social_media_hours + mental_health_rating +
+                 exercise_frequency + attendance_percentage,
+               data = df)
+  
+  glance(modelo) |>
+    select(r.squared, adj.r.squared, sigma, statistic, p.value, df) |>
+    mutate(
+      r.squared     = round(r.squared, 4),
+      adj.r.squared = round(adj.r.squared, 4),
+      sigma         = round(sigma, 3),
+      statistic     = round(statistic, 3),
+      p.value       = round(p.value, 6)
+    ) |>
+    rename(
+      `R²`               = r.squared,
+      `R² ajustado`      = adj.r.squared,
+      `Error estándar`   = sigma,
+      `Estadístico F`    = statistic,
+      `p-value`          = p.value,
+      `Grados libertad`  = df
+    ) |>
+    gt() |>
+    tab_header(title = "Métricas del modelo de regresión múltiple") |>
+    tab_options(
+      table.background.color         = "#ffffff",
+      column_labels.background.color = "#0a0a0a",
+      column_labels.font.weight      = "bold",
+      table.border.top.color         = "#0a0a0a",
+      table.border.top.width         = px(2)
+    ) |>
+    tab_style(
+      style = cell_text(color = "#ffffff"),
+      locations = cells_column_labels()
+    )
+}
     

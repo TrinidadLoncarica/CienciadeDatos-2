@@ -1,69 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
 
 .reveal {
-  font-family: 'Inter', sans-serif;
-  font-size: 24px;
-  color: #111111;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 26px;
+  color: #0a0a0a;
   background-color: #ffffff;
 }
 
 .reveal .slides section {
   text-align: left;
-  padding: 40px 80px;
+  padding: 20px 90px;
 }
 
-/* Títulos grandes que ocupan espacio */
 .reveal h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 3.8em;
-  color: #111111;
-  letter-spacing: 0.04em;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 3.6em;
+  color: #0a0a0a;
   line-height: 1;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
 }
 
 .reveal h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.8em;
-  color: #111111;
-  letter-spacing: 0.04em;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.4em;
+  color: #0a0a0a;
   line-height: 1;
-  text-transform: uppercase;
-  border-bottom: 2px solid #111111;
-  padding-bottom: 12px;
-  margin-bottom: 28px;
+  letter-spacing: -0.02em;
+  border-bottom: 2.5px solid #0a0a0a;
+  padding-bottom: 14px;
+  margin-bottom: 30px;
 }
 
 .reveal h3 {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85em;
-  font-weight: 600;
-  color: #888888;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-/* Etiqueta de sección */
-.seccion-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.55em;
-  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75em;
+  font-weight: 500;
+  color: #999999;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #aaaaaa;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
-/* Cuerpo de texto */
+.seccion-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.52em;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #bbbbbb;
+  margin-bottom: 2px;
+}
+
 .reveal p {
   font-weight: 300;
-  line-height: 1.6;
-  color: #222222;
+  line-height: 1.7;
+  color: #1a1a1a;
+  font-size: 1em;
 }
 
-/* Listas */
 .reveal ul {
   list-style: none;
   padding-left: 0;
@@ -72,100 +67,116 @@
 .reveal ul li {
   font-size: 1em;
   font-weight: 300;
-  line-height: 1.8;
-  color: #222222;
-  border-bottom: 1px solid #eeeeee;
-  padding: 6px 0;
+  line-height: 2;
+  color: #1a1a1a;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 4px 0;
 }
 
 .reveal ul li::before {
-  content: "→";
-  color: #aaaaaa;
-  margin-right: 12px;
+  content: "—";
+  color: #cccccc;
+  margin-right: 14px;
   font-weight: 400;
 }
 
-/* Callout */
-.callout-ln {
-  border-left: 3px solid #111111;
-  background: #f7f7f7;
-  padding: 16px 24px;
-  margin: 20px 0;
-  font-family: 'Inter', sans-serif;
-  font-weight: 300;
+.reveal ol {
+  padding-left: 20px;
+}
+
+.reveal ol li {
   font-size: 1em;
-  color: #111111;
+  font-weight: 300;
+  line-height: 2;
+  color: #1a1a1a;
+}
+
+.callout-ln {
+  border-left: 3px solid #0a0a0a;
+  background: #f8f8f8;
+  padding: 18px 28px;
+  margin: 24px 0;
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1.05em;
+  color: #0a0a0a;
   line-height: 1.6;
 }
 
-/* Slide de título */
 .slide-title h1 {
-  font-size: 4.5em;
+  font-size: 4em;
   line-height: 0.95;
+  margin-bottom: 20px;
 }
 
-.slide-title .subtitle {
-  font-family: 'Inter', sans-serif;
+.slide-title p {
   font-size: 0.7em;
   font-weight: 300;
-  color: #888888;
+  color: #999999;
+  letter-spacing: 0.08em;
+}
+
+.firma {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.5em;
+  font-weight: 400;
+  color: #bbbbbb;
+  border-top: 1px solid #eeeeee;
+  padding-top: 12px;
+  margin-top: 40px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-top: 12px;
 }
 
-/* Firma */
-.firma {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.55em;
-  font-weight: 400;
-  color: #aaaaaa;
-  border-top: 1px solid #eeeeee;
-  padding-top: 10px;
-  margin-top: 30px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* Tablas */
 .reveal table {
-  font-size: 0.78em;
+  font-size: 0.75em;
   border-collapse: collapse;
   width: 100%;
 }
 
 .reveal table th {
-  background: #111111;
+  background: #0a0a0a;
   color: #ffffff;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  padding: 10px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  padding: 12px 18px;
   text-align: left;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 0.8em;
+  font-size: 0.78em;
 }
 
 .reveal table td {
-  padding: 9px 16px;
-  border-bottom: 1px solid #eeeeee;
+  padding: 10px 18px;
+  border-bottom: 1px solid #f0f0f0;
   font-weight: 300;
-  color: #222222;
+  color: #1a1a1a;
 }
 
 .reveal table tr:nth-child(even) td {
-  background: #f7f7f7;
+  background: #fafafa;
 }
 
-/* Número de slide */
 .reveal .slide-number {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.6em;
-  color: #cccccc;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.55em;
+  color: #dddddd;
   background: transparent;
 }
 
-/* Columnas con separador */
+.reveal .progress {
+  color: #0a0a0a;
+  height: 3px;
+}
+
 .reveal .columns {
-  gap: 40px;
+  gap: 50px;
+}
+
+code {
+  font-size: 0.85em;
+  background: #f4f4f4;
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: #333333;
 }

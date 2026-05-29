@@ -332,3 +332,47 @@ plot_correlaciones_exam <- function(datos) {
       plot.title      = element_text(face = "bold")
     )
 }
+
+plot_perfil_rendimiento <- function(df) {
+  
+  tema_interno <- theme_minimal(base_family = "sans") +
+    theme(
+      plot.background   = element_rect(fill = "#ffffff", color = NA),
+      panel.background  = element_rect(fill = "#ffffff", color = NA),
+      panel.grid.major  = element_line(color = "#eeeeee", linewidth = 0.4),
+      panel.grid.minor  = element_blank(),
+      axis.text         = element_text(color = "#111111", size = 11),
+      axis.title        = element_text(color = "#111111", size = 12, face = "bold"),
+      plot.title        = element_text(color = "#111111", size = 15, face = "bold"),
+      plot.subtitle     = element_text(color = "#888888", size = 11),
+      legend.background = element_rect(fill = "#ffffff", color = NA),
+      legend.text       = element_text(color = "#111111", size = 10),
+      legend.title      = element_text(color = "#111111", size = 11, face = "bold")
+    )
+  
+  df |>
+    mutate(grupo = ifelse(df$exam_score >= quantile(df$exam_score, 0.75),
+                          "Alto rendimiento", "Resto")) |>
+    group_by(grupo) |>
+    summarise(
+      `Horas de estudio`   = mean(study_hours_per_day, na.rm = TRUE),
+      `Horas de sueño`     = mean(sleep_hours, na.rm = TRUE),
+      `Redes sociales (h)` = mean(social_media_hours, na.rm = TRUE),
+      `Salud mental`       = mean(mental_health_rating, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    pivot_longer(-grupo, names_to = "Variable", values_to = "Valor") |>
+    ggplot(aes(x = Variable, y = Valor, fill = grupo)) +
+    geom_col(position = "dodge", width = 0.6, alpha = 0.9) +
+    scale_fill_manual(values = c("#111111", "#cccccc")) +
+    coord_flip() +
+    labs(
+      title    = "Comparación: alto rendimiento vs. resto",
+      subtitle = "Promedios por grupo",
+      x        = NULL,
+      y        = "Valor promedio",
+      fill     = NULL
+    ) +
+    tema_interno +
+    theme(legend.position = "bottom")
+}
